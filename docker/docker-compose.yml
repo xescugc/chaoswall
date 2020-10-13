@@ -1,0 +1,20 @@
+version: "3"
+services:
+  chaoswall:
+    volumes:
+      - cache:/go
+    depends_on:
+      - mariadb
+    networks:
+      chaoswall:
+
+  mariadb:
+    image: mariadb:10.4.12
+    networks:
+      chaoswall:
+
+volumes:
+  cache:
+
+networks:
+  chaoswall:

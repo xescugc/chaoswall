@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <title>ChaosWall</title>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" href="/">ChaosWall</a>
+    </nav>
+
+    </br>
+
+    <div class="container-fluid">
+      <div class="row" id="main">
+        <div class="col-3">
+          <div class="list-group" id="sidebar"></div>
+        </div>
+        <div class="col-9" id="content">
+        </div>
+      </div>
+    </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/underscore.min.js"></script>
+    <script src="/assets/js/backbone.min.js"></script>
+    <script src="/assets/js/front.js"></script>
+
+    <script type="text/template" id="gyms-tmpl">
+      <h1>Gyms</h1>
+      <button id="new-gym" class="btn btn-primary">New Gym</button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Canonical</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% _.each(gyms, function(gym){ %>
+            <tr data-canonical="<%= gym.canonical %>">
+              <td><%= gym.name %></td>
+              <td><%= gym.canonical %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </script>
+
+    <script type="text/template" id="gym-new-tmpl">
+      <h1>New Gym</h1>
+      <form>
+        <div class="form-group">
+          <label for="name">Gym Name</label>
+          <input name="name" type="text" class="form-control" id="name">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </script>
+
+    <script type="text/template" id="gym-tmpl">
+      <h1>Gym: <%= gym.name %></h1>
+      <button id="new-wall" class="btn btn-primary">New Wall</button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Canonical</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% _.each(walls, function(wall){ %>
+            <tr data-canonical="<%= wall.canonical %>">
+              <td><%= wall.name %></td>
+              <td><%= wall.canonical %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </script>
+
+    <script type="text/template" id="wall-new-tmpl">
+      <h1>New Wall</h1>
+      <form>
+        <div class="form-group">
+          <label for="name">Gym Name</label>
+          <input name="name" type="text" class="form-control" id="name">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </script>
+
+    <script type="text/template" id="wall-tmpl">
+      <h1>Wall: <%= wall.name %></h1>
+      <button id="new-route" class="btn btn-primary">New Route</button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Canonical</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% _.each(routes, function(route){ %>
+            <tr data-canonical="<%= route.canonical %>">
+              <td><%= route.name %></td>
+              <td><%= route.canonical %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </script>
+
+    <script type="text/template" id="route-new-tmpl">
+      <h1>New Route</h1>
+      <form>
+        <div class="form-group">
+          <label for="name">Gym Name</label>
+          <input name="name" type="text" class="form-control" id="name">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </script>
+
+    <script type="text/template" id="route-tmpl">
+      <h1>Route: <%= route.name %></h1>
+    </script>
+
+  </body>
+</html>
