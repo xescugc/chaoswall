@@ -36,9 +36,11 @@ func decodeCreateGymRequest(_ context.Context, r *http.Request) (interface{}, er
 	}, nil
 }
 func encodeCreateGymResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(endpoint.CreateGymResponse)
+	gym := models.Gym(res.Gym)
+
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(nil)
+	json.NewEncoder(w).Encode(dataResponse(gym))
 
 	return nil
 }
@@ -61,7 +63,8 @@ func encodeGetGymResponse(_ context.Context, w http.ResponseWriter, response int
 
 func decodeUpdateGymRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	vars := mux.Vars(r)
-	err := r.ParseForm()
+	var body map[string]interface{}
+	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil {
 		return nil, err
 	}
@@ -69,13 +72,15 @@ func decodeUpdateGymRequest(_ context.Context, r *http.Request) (interface{}, er
 	return endpoint.UpdateGymRequest{
 		GymCanonical: vars["gym_canonical"],
 
-		NewName: r.PostForm.Get("name"),
+		NewName: body["name"].(string),
 	}, nil
 }
 func encodeUpdateGymResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(endpoint.UpdateGymResponse)
+	gym := models.Gym(res.Gym)
+
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusNoContent)
-	json.NewEncoder(w).Encode(nil)
+	json.NewEncoder(w).Encode(dataResponse(gym))
 
 	return nil
 }
@@ -88,8 +93,8 @@ func decodeDeleteGymRequest(_ context.Context, r *http.Request) (interface{}, er
 }
 func encodeDeleteGymResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(nil)
 	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(nil)
 
 	return nil
 }

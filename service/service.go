@@ -21,10 +21,10 @@ type Service interface {
 
 	AuthenticateUser(ctx context.Context, email, password string) (*user.User, error)
 
-	CreateGym(ctx context.Context, g gym.Gym) error
+	CreateGym(ctx context.Context, g gym.Gym) (*gym.Gym, error)
 	GetGyms(ctx context.Context) ([]*gym.Gym, error)
 	GetGym(ctx context.Context, gCan string) (*gym.Gym, error)
-	UpdateGym(ctx context.Context, gCan string, g gym.Gym) error
+	UpdateGym(ctx context.Context, gCan string, g gym.Gym) (*gym.Gym, error)
 	DeleteGym(ctx context.Context, gCan string) error
 
 	CreateWall(ctx context.Context, gCan string, w wall.Wall) error

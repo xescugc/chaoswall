@@ -98,8 +98,8 @@ func decodeDeleteWallRequest(_ context.Context, r *http.Request) (interface{}, e
 }
 func encodeDeleteWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(nil)
 	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(nil)
 
 	return nil
 }

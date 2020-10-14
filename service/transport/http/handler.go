@@ -111,19 +111,19 @@ func MakeHandler(s service.Service) http.Handler {
 	jsonr.Handle("/gyms", getGymsHandler).Methods("GET")
 	jsonr.Handle("/gyms", createGymHandler).Methods("POST")
 	jsonr.Handle("/gyms/{gym_canonical}", getGymHandler).Methods("GET")
-	jsonr.Handle("/gyms/{gym_canonical}", updateGymHandler).Methods("POST")
+	jsonr.Handle("/gyms/{gym_canonical}", updateGymHandler).Methods("PUT")
 	jsonr.Handle("/gyms/{gym_canonical}", deleteGymHandler).Methods("DELETE")
 
 	jsonr.Handle("/gyms/{gym_canonical}/walls", getWallsHandler).Methods("GET")
 	jsonr.Handle("/gyms/{gym_canonical}/walls", createWallHandler).Methods("POST")
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}", getWallHandler).Methods("GET")
-	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}", updateWallHandler).Methods("POST")
+	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}", updateWallHandler).Methods("PUT")
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}", deleteWallHandler).Methods("DELETE")
 
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}/routes", getRoutesHandler).Methods("GET")
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}/routes", createRouteHandler).Methods("POST")
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}/routes/{route_canonical}", getRouteHandler).Methods("GET")
-	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}/routes/{route_canonical}", updateRouteHandler).Methods("POST")
+	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}/routes/{route_canonical}", updateRouteHandler).Methods("PUT")
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}/routes/{route_canonical}", deleteRouteHandler).Methods("DELETE")
 
 	jsonr.NotFoundHandler = http.HandlerFunc(

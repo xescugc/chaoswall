@@ -9,9 +9,12 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func (s *service) CreateGym(ctx context.Context, g gym.Gym) error {
+func (s *service) CreateGym(ctx context.Context, g gym.Gym) (*gym.Gym, error) {
+	if g.Name == "" {
+		return nil, xerrors.Errorf("gym Name is required")
+	}
+	g.Canonical = slug.Make(g.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
-		g.Canonical = slug.Make(g.Name)
 		_, err := uow.Gyms().Create(ctx, g)
 		if err != nil {
 			return xerrors.Errorf("failed to create gym: %w", err)
@@ -20,10 +23,10 @@ func (s *service) CreateGym(ctx context.Context, g gym.Gym) error {
 		return nil
 	}, s.gyms)
 	if err != nil {
-		return xerrors.Errorf("failed unit of work: %w", err)
+		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
 
-	return nil
+	return &g, nil
 }
 
 func (s *service) GetGyms(ctx context.Context) ([]*gym.Gym, error) {
@@ -44,7 +47,11 @@ func (s *service) GetGym(ctx context.Context, gCan string) (*gym.Gym, error) {
 	return gym, nil
 }
 
-func (s *service) UpdateGym(ctx context.Context, gCan string, g gym.Gym) error {
+func (s *service) UpdateGym(ctx context.Context, gCan string, g gym.Gym) (*gym.Gym, error) {
+	if g.Name == "" {
+		return nil, xerrors.Errorf("gym Name is required")
+	}
+	g.Canonical = slug.Make(g.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
 		err := uow.Gyms().UpdateByCanonical(ctx, gCan, g)
 		if err != nil {
@@ -53,10 +60,10 @@ func (s *service) UpdateGym(ctx context.Context, gCan string, g gym.Gym) error {
 		return nil
 	}, s.gyms)
 	if err != nil {
-		return xerrors.Errorf("failed unit of work: %w", err)
+		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
 
-	return nil
+	return &g, nil
 }
 
 func (s *service) DeleteGym(ctx context.Context, gCan string) error {
