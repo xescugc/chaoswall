@@ -88,10 +88,11 @@ func (mr *ServiceMockRecorder) CreateUser(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // CreateWall mocks base method
-func (m *Service) CreateWall(arg0 context.Context, arg1 string, arg2 wall.Wall) error {
+func (m *Service) CreateWall(arg0 context.Context, arg1 string, arg2 wall.Wall) (*wall.Wall, error) {
 	ret := m.ctrl.Call(m, "CreateWall", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*wall.Wall)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateWall indicates an expected call of CreateWall
@@ -276,10 +277,11 @@ func (mr *ServiceMockRecorder) UpdateUser(arg0, arg1, arg2 interface{}) *gomock.
 }
 
 // UpdateWall mocks base method
-func (m *Service) UpdateWall(arg0 context.Context, arg1, arg2 string, arg3 wall.Wall) error {
+func (m *Service) UpdateWall(arg0 context.Context, arg1, arg2 string, arg3 wall.Wall) (*wall.Wall, error) {
 	ret := m.ctrl.Call(m, "UpdateWall", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*wall.Wall)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // UpdateWall indicates an expected call of UpdateWall

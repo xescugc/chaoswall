@@ -165,7 +165,7 @@ $(function(){
     submitForm: function(e) {
       e.preventDefault()
       var that = this
-      var data = getFormData(this.$el.find("form"))
+      var data = getFormData(that.$el.find("form"))
       that.gym.set(data)
 
       that.gym.save(null, {
@@ -236,13 +236,48 @@ $(function(){
       return this;
     },
     submitForm: function(e) {
-      var that = this
       e.preventDefault()
+      var that = this
       var data = getFormData(that.$el.find("form"))
       that.gym.walls.create(data, {
         wait: true,
         success: function(model, response, options) {
-          app.Router.navigate(that.gym.url(), { trigger: true })
+          model.gym = that.gym
+          app.Router.navigate(model.url(), { trigger: true })
+        },
+        error: function(model, response, options) {
+          console.log(response.responseText)
+        }
+      });
+    },
+  });
+
+  app.WallEditView = Backbone.View.extend({
+    template: _.template($("#wall-edit-tmpl").html()),
+    events: {
+      "submit form": "submitForm",
+    },
+    initialize: function() {
+      this.wall = this.model
+      this.listenTo(this.wall, "change", this.render)
+
+      this.wall.fetch()
+    },
+    render: function() {
+      this.$el.html(this.template({wall: this.wall.toJSON()}));
+      return this;
+    },
+    submitForm: function(e) {
+      e.preventDefault()
+      var that = this
+      var data = getFormData(that.$el.find("form"))
+      that.wall.set(data)
+
+      that.wall.save(null, {
+        wait: true,
+        success: function(model, response, options) {
+          that.wall = model
+          app.Router.navigate(that.wall.url(), { trigger: true })
         },
         error: function(model, response, options) {
           console.log(response.responseText)
@@ -256,6 +291,8 @@ $(function(){
     events: {
       "click #new-route": "renderNewRoute",
       "click tr": "renderRoute",
+      "click button.edit": "renderEditWall",
+      "click button.delete": "deleteWall",
     },
     initialize: function() {
       this.wall = this.model
@@ -275,6 +312,23 @@ $(function(){
     renderRoute: function(e) {
       var can = e.currentTarget.dataset.canonical
       app.Router.navigate(this.wall.routes.url()+"/"+can,{ trigger: true })
+    },
+    renderEditWall: function(e) {
+      e.stopPropagation()
+      app.Router.navigate(this.wall.url()+"/edit", { trigger: true })
+    },
+    deleteWall: function(e) {
+      e.stopPropagation()
+      var that = this
+      that.wall.destroy({
+        wait: true,
+        success: function(model, response, options) {
+          app.Router.navigate(that.wall.gym.url(),{ trigger: true })
+        },
+        error: function(model, response, options) {
+          console.log(response.responseText)
+        },
+      })
     },
   });
 
@@ -329,6 +383,7 @@ $(function(){
       "gyms/:gym_canonical/walls/new":  "wallNewRender",
 
       "gyms/:gym_canonical/walls/:wall_canonical":             "wallRender",
+      "gyms/:gym_canonical/walls/:wall_canonical/edit":        "wallEditRender",
       "gyms/:gym_canonical/walls/:wall_canonical/routes/new":  "routeNewRender",
 
       "gyms/:gym_canonical/walls/:wall_canonical/routes/:route_canonical":  "routeRender",
@@ -353,8 +408,8 @@ $(function(){
       var g = new Gym()
       g.set("canonical", gymCan)
 
-      var gnv = new app.GymEditView({model: g});
-      this.layout.setContent(gnv)
+      var gev = new app.GymEditView({model: g});
+      this.layout.setContent(gev)
     },
     gymRender: function(gymCan) {
       var g = new Gym()
@@ -370,7 +425,7 @@ $(function(){
       wnv.gym = g
       this.layout.setContent(wnv)
     },
-    wallRender: function(gymCan, wallCan) {
+    wallEditRender: function(gymCan,wallCan) {
       var g = new Gym()
       g.set("canonical", gymCan)
 
@@ -378,8 +433,20 @@ $(function(){
       w.set("canonical", wallCan)
       w.urlRoot = g.walls.url()
 
-      var wnv = new app.WallView({model: w});
-      this.layout.setContent(wnv)
+      var wev = new app.WallEditView({model: w});
+      this.layout.setContent(wev)
+    },
+    wallRender: function(gymCan, wallCan) {
+      var g = new Gym()
+      g.set("canonical", gymCan)
+
+      var w = new Wall()
+      w.set("canonical", wallCan)
+      w.urlRoot = g.walls.url()
+      w.gym = g
+
+      var wv = new app.WallView({model: w});
+      this.layout.setContent(wv)
     },
 
     routeNewRender: function(gymCan, wallCan) {
@@ -394,7 +461,6 @@ $(function(){
       rnv.wall = w
       this.layout.setContent(rnv)
     },
-
     routeRender: function(gymCan, wallCan, routeCan) {
       var g = new Gym()
       g.set("canonical", gymCan)
