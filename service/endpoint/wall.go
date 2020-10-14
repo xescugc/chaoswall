@@ -35,6 +35,10 @@ type CreateWallRequest struct {
 	Name         string
 }
 
+type CreateWallResponse struct {
+	Wall wall.Wall
+}
+
 func MakeCreateWall(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(CreateWallRequest)
@@ -42,12 +46,14 @@ func MakeCreateWall(s service.Service) endpoint.Endpoint {
 			Name: req.Name,
 		}
 
-		err := s.CreateWall(ctx, req.GymCanonical, w)
+		nw, err := s.CreateWall(ctx, req.GymCanonical, w)
 		if err != nil {
 			return nil, err
 		}
 
-		return nil, nil
+		return CreateWallResponse{
+			Wall: *nw,
+		}, nil
 	}
 }
 
@@ -82,20 +88,25 @@ type UpdateWallRequest struct {
 	NewName string
 }
 
+type UpdateWallResponse struct {
+	Wall wall.Wall
+}
+
 func MakeUpdateWall(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(UpdateWallRequest)
 		w := wall.Wall{
-			Name:      req.NewName,
-			Canonical: req.WallCanonical,
+			Name: req.NewName,
 		}
 
-		err := s.UpdateWall(ctx, req.GymCanonical, req.WallCanonical, w)
+		uw, err := s.UpdateWall(ctx, req.GymCanonical, req.WallCanonical, w)
 		if err != nil {
 			return nil, err
 		}
 
-		return nil, nil
+		return UpdateWallResponse{
+			Wall: *uw,
+		}, nil
 	}
 }
 

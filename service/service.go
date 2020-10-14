@@ -27,10 +27,10 @@ type Service interface {
 	UpdateGym(ctx context.Context, gCan string, g gym.Gym) (*gym.Gym, error)
 	DeleteGym(ctx context.Context, gCan string) error
 
-	CreateWall(ctx context.Context, gCan string, w wall.Wall) error
+	CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wall.Wall, error)
 	GetWalls(ctx context.Context, gCan string) ([]*wall.Wall, error)
 	GetWall(ctx context.Context, gCan, cwCan string) (*wall.Wall, error)
-	UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall) error
+	UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall) (*wall.Wall, error)
 	DeleteWall(ctx context.Context, gCan, wCan string) error
 
 	CreateRoute(ctx context.Context, gCan, wCan string, r route.Route) error
