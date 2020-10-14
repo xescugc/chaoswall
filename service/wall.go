@@ -9,9 +9,12 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) error {
+func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wall.Wall, error) {
+	if w.Name == "" {
+		return nil, xerrors.Errorf("wall Name is required")
+	}
+	w.Canonical = slug.Make(w.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
-		w.Canonical = slug.Make(w.Name)
 		_, err := uow.Walls().Create(ctx, gCan, w)
 		if err != nil {
 			return xerrors.Errorf("failed to create wall: %w", err)
@@ -20,10 +23,10 @@ func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) erro
 		return nil
 	}, s.walls)
 	if err != nil {
-		return xerrors.Errorf("failed unit of work: %w", err)
+		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
 
-	return nil
+	return &w, nil
 }
 
 func (s *service) GetWalls(ctx context.Context, gCan string) ([]*wall.Wall, error) {
@@ -44,9 +47,12 @@ func (s *service) GetWall(ctx context.Context, gCan, wCan string) (*wall.Wall, e
 	return wall, nil
 }
 
-func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall) error {
+func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall) (*wall.Wall, error) {
+	if w.Name == "" {
+		return nil, xerrors.Errorf("wall Name is required")
+	}
+	w.Canonical = slug.Make(w.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
-		w.Canonical = slug.Make(w.Name)
 		err := uow.Walls().UpdateByCanonical(ctx, gCan, wCan, w)
 		if err != nil {
 			return xerrors.Errorf("failed to update wall %q: %w", wCan, err)
@@ -54,10 +60,10 @@ func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall
 		return nil
 	}, s.walls)
 	if err != nil {
-		return xerrors.Errorf("failed unit of work: %w", err)
+		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
 
-	return nil
+	return &w, nil
 }
 
 func (s *service) DeleteWall(ctx context.Context, gCan, wCan string) error {

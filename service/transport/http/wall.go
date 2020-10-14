@@ -43,9 +43,11 @@ func decodeCreateWallRequest(_ context.Context, r *http.Request) (interface{}, e
 	}, nil
 }
 func encodeCreateWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(endpoint.CreateWallResponse)
+	wall := models.Wall(res.Wall)
+
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(nil)
+	json.NewEncoder(w).Encode(dataResponse(wall))
 
 	return nil
 }
@@ -69,7 +71,8 @@ func encodeGetWallResponse(_ context.Context, w http.ResponseWriter, response in
 
 func decodeUpdateWallRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	vars := mux.Vars(r)
-	err := r.ParseForm()
+	var body map[string]interface{}
+	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil {
 		return nil, err
 	}
@@ -78,13 +81,15 @@ func decodeUpdateWallRequest(_ context.Context, r *http.Request) (interface{}, e
 		GymCanonical:  vars["gym_canonical"],
 		WallCanonical: vars["wall_canonical"],
 
-		NewName: r.PostForm.Get("name"),
+		NewName: body["name"].(string),
 	}, nil
 }
 func encodeUpdateWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(endpoint.UpdateWallResponse)
+	wall := models.Wall(res.Wall)
+
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusNoContent)
-	json.NewEncoder(w).Encode(nil)
+	json.NewEncoder(w).Encode(dataResponse(wall))
 
 	return nil
 }
