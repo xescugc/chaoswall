@@ -115,6 +115,7 @@ $(function(){
       app.Router.navigate("gyms/new",{ trigger: true })
     },
     renderGym: function(e) {
+      e.stopPropagation()
       var can = e.currentTarget.dataset.canonical
       app.Router.navigate("gyms/"+can,{ trigger: true })
     },
@@ -137,7 +138,41 @@ $(function(){
       g.save(null, {
         wait: true,
         success: function(model, response, options) {
-          app.Router.navigate("gyms/")
+          app.Router.navigate(model.url(), { trigger: true })
+        },
+        error: function(model, response, options) {
+          console.log(response.responseText)
+        }
+      });
+    },
+  });
+
+  app.GymEditView = Backbone.View.extend({
+    template: _.template($("#gym-edit-tmpl").html()),
+    events: {
+      "submit form": "submitForm",
+    },
+    initialize: function() {
+      this.gym = this.model
+      this.listenTo(this.gym, "change", this.render)
+
+      this.gym.fetch()
+    },
+    render: function() {
+      this.$el.html(this.template({gym: this.gym.toJSON()}));
+      return this;
+    },
+    submitForm: function(e) {
+      e.preventDefault()
+      var that = this
+      var data = getFormData(this.$el.find("form"))
+      that.gym.set(data)
+
+      that.gym.save(null, {
+        wait: true,
+        success: function(model, response, options) {
+          that.gym = model
+          app.Router.navigate(that.gym.url(), { trigger: true })
         },
         error: function(model, response, options) {
           console.log(response.responseText)
@@ -151,6 +186,8 @@ $(function(){
     events: {
       "click #new-wall": "renderNewWall",
       "click tr": "renderWall",
+      "click button.edit": "renderEditGym",
+      "click button.delete": "deleteGym",
     },
     initialize: function() {
       this.gym = this.model
@@ -170,6 +207,22 @@ $(function(){
     renderWall: function(e) {
       var can = e.currentTarget.dataset.canonical
       app.Router.navigate(this.gym.walls.url()+"/"+can,{ trigger: true })
+    },
+    renderEditGym: function(e) {
+      e.stopPropagation()
+      app.Router.navigate(this.gym.url()+"/edit", { trigger: true })
+    },
+    deleteGym: function(e) {
+      e.stopPropagation()
+      this.gym.destroy({
+        wait: true,
+        success: function(model, response, options) {
+          app.Router.navigate("gyms/",{ trigger: true })
+        },
+        error: function(model, response, options) {
+          console.log(response.responseText)
+        },
+      })
     },
   });
 
@@ -272,6 +325,7 @@ $(function(){
       "gyms/new":                       "gymNewRender",
 
       "gyms/:gym_canonical":            "gymRender",
+      "gyms/:gym_canonical/edit":       "gymEditRender",
       "gyms/:gym_canonical/walls/new":  "wallNewRender",
 
       "gyms/:gym_canonical/walls/:wall_canonical":             "wallRender",
@@ -293,6 +347,13 @@ $(function(){
     },
     gymNewRender: function() {
       var gnv = new app.GymNewView();
+      this.layout.setContent(gnv)
+    },
+    gymEditRender: function(gymCan) {
+      var g = new Gym()
+      g.set("canonical", gymCan)
+
+      var gnv = new app.GymEditView({model: g});
       this.layout.setContent(gnv)
     },
     gymRender: function(gymCan) {
