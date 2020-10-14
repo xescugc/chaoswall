@@ -120,7 +120,7 @@ func (r *GymRepository) UpdateByCanonical(ctx context.Context, gCan string, g gy
 	dbg := newDbGym(g)
 	_, err := r.querier.ExecContext(ctx, `
 		UPDATE gyms AS g
-		SET g.name = ?, r.canonical = ?
+		SET g.name = ?, g.canonical = ?
 		WHERE g.canonical = ?
 	`, dbg.Name, dbg.Canonical, gCan)
 

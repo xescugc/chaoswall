@@ -51,10 +51,11 @@ func (mr *ServiceMockRecorder) AuthenticateUser(arg0, arg1, arg2 interface{}) *g
 }
 
 // CreateGym mocks base method
-func (m *Service) CreateGym(arg0 context.Context, arg1 gym.Gym) error {
+func (m *Service) CreateGym(arg0 context.Context, arg1 gym.Gym) (*gym.Gym, error) {
 	ret := m.ctrl.Call(m, "CreateGym", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*gym.Gym)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateGym indicates an expected call of CreateGym
@@ -238,10 +239,11 @@ func (mr *ServiceMockRecorder) GetWalls(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // UpdateGym mocks base method
-func (m *Service) UpdateGym(arg0 context.Context, arg1 string, arg2 gym.Gym) error {
+func (m *Service) UpdateGym(arg0 context.Context, arg1 string, arg2 gym.Gym) (*gym.Gym, error) {
 	ret := m.ctrl.Call(m, "UpdateGym", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*gym.Gym)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // UpdateGym indicates an expected call of UpdateGym

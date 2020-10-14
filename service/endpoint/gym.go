@@ -29,6 +29,10 @@ type CreateGymRequest struct {
 	Name string
 }
 
+type CreateGymResponse struct {
+	Gym gym.Gym
+}
+
 func MakeCreateGym(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(CreateGymRequest)
@@ -36,12 +40,14 @@ func MakeCreateGym(s service.Service) endpoint.Endpoint {
 			Name: req.Name,
 		}
 
-		err := s.CreateGym(ctx, g)
+		ng, err := s.CreateGym(ctx, g)
 		if err != nil {
 			return nil, err
 		}
 
-		return nil, nil
+		return CreateGymResponse{
+			Gym: *ng,
+		}, nil
 	}
 }
 
@@ -73,20 +79,25 @@ type UpdateGymRequest struct {
 	NewName string
 }
 
+type UpdateGymResponse struct {
+	Gym gym.Gym
+}
+
 func MakeUpdateGym(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(UpdateGymRequest)
 		g := gym.Gym{
-			Name:      req.NewName,
-			Canonical: req.GymCanonical,
+			Name: req.NewName,
 		}
 
-		err := s.UpdateGym(ctx, req.GymCanonical, g)
+		ug, err := s.UpdateGym(ctx, req.GymCanonical, g)
 		if err != nil {
 			return nil, err
 		}
 
-		return nil, nil
+		return UpdateGymResponse{
+			Gym: *ug,
+		}, nil
 	}
 }
 
