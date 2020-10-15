@@ -161,8 +161,25 @@
       </form>
     </script>
 
+    <script type="text/template" id="route-edit-tmpl">
+      <h1>Edit Route: <%= route.name %></h1>
+      <form>
+        <div class="form-group">
+          <label for="name">Gym Name</label>
+          <input name="name" type="text" value="<%= route.name %>" class="form-control" id="name">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </script>
+
     <script type="text/template" id="route-tmpl">
-      <h1>Route: <%= route.name %></h1>
+      <div class="clearfix">
+        <h1>Route: <%= route.name %></h1>
+        <div class="float-right btn-group" role="group">
+          <button type="button" class="btn btn-info edit">Edit</button>
+          <button type="button" class="btn btn-danger delete">Delete</button>
+        </div>
+      </div>
     </script>
 
   </body>
