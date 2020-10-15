@@ -45,9 +45,11 @@ func decodeCreateRouteRequest(_ context.Context, r *http.Request) (interface{}, 
 	}, nil
 }
 func encodeCreateRouteResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(endpoint.CreateRouteResponse)
+	route := models.Route(res.Route)
+
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(nil)
+	json.NewEncoder(w).Encode(dataResponse(route))
 
 	return nil
 }
@@ -72,7 +74,8 @@ func encodeGetRouteResponse(_ context.Context, w http.ResponseWriter, response i
 
 func decodeUpdateRouteRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	vars := mux.Vars(r)
-	err := r.ParseForm()
+	var body map[string]interface{}
+	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil {
 		return nil, err
 	}
@@ -82,13 +85,15 @@ func decodeUpdateRouteRequest(_ context.Context, r *http.Request) (interface{}, 
 		WallCanonical:  vars["wall_canonical"],
 		RouteCanonical: vars["route_canonical"],
 
-		NewName: r.PostForm.Get("name"),
+		NewName: body["name"].(string),
 	}, nil
 }
 func encodeUpdateRouteResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(endpoint.UpdateRouteResponse)
+	route := models.Route(res.Route)
+
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusNoContent)
-	json.NewEncoder(w).Encode(nil)
+	json.NewEncoder(w).Encode(dataResponse(route))
 
 	return nil
 }

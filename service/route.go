@@ -9,9 +9,12 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func (s *service) CreateRoute(ctx context.Context, gCan, wCan string, r route.Route) error {
+func (s *service) CreateRoute(ctx context.Context, gCan, wCan string, r route.Route) (*route.Route, error) {
+	if r.Name == "" {
+		return nil, xerrors.Errorf("route Name is required")
+	}
+	r.Canonical = slug.Make(r.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
-		r.Canonical = slug.Make(r.Name)
 		_, err := uow.Routes().Create(ctx, gCan, wCan, r)
 		if err != nil {
 			return xerrors.Errorf("failed to create route: %w", err)
@@ -20,10 +23,10 @@ func (s *service) CreateRoute(ctx context.Context, gCan, wCan string, r route.Ro
 		return nil
 	}, s.routes)
 	if err != nil {
-		return xerrors.Errorf("failed unit of work: %w", err)
+		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
 
-	return nil
+	return &r, nil
 }
 
 func (s *service) GetRoutes(ctx context.Context, gCan, wCan string) ([]*route.Route, error) {
@@ -44,9 +47,12 @@ func (s *service) GetRoute(ctx context.Context, gCan, wCan, rCan string) (*route
 	return route, nil
 }
 
-func (s *service) UpdateRoute(ctx context.Context, gCan, wCan, rCan string, r route.Route) error {
+func (s *service) UpdateRoute(ctx context.Context, gCan, wCan, rCan string, r route.Route) (*route.Route, error) {
+	if r.Name == "" {
+		return nil, xerrors.Errorf("route Name is required")
+	}
+	r.Canonical = slug.Make(r.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
-		r.Canonical = slug.Make(r.Name)
 		err := uow.Routes().UpdateByCanonical(ctx, gCan, wCan, rCan, r)
 		if err != nil {
 			return xerrors.Errorf("failed to update route %q: %w", rCan, err)
@@ -54,10 +60,10 @@ func (s *service) UpdateRoute(ctx context.Context, gCan, wCan, rCan string, r ro
 		return nil
 	}, s.routes)
 	if err != nil {
-		return xerrors.Errorf("failed unit of work: %w", err)
+		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
 
-	return nil
+	return &r, nil
 }
 
 func (s *service) DeleteRoute(ctx context.Context, gCan, wCan, rCan string) error {
