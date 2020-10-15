@@ -161,7 +161,7 @@ func (r *RouteRepository) DeleteByCanonical(ctx context.Context, gCan, wCan, rCa
 			ON w.id = r.wall_id
 		JOIN gyms AS g
 			ON g.id = w.gym_id
-		WHERE g.canonical = ? AND w.canonical = ? AND r.canonical
+		WHERE g.canonical = ? AND w.canonical = ? AND r.canonical = ?
 	`, gCan, wCan, rCan)
 	if err != nil {
 		return xerrors.Errorf("failed to ExecContext: %w", err)

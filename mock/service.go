@@ -64,10 +64,11 @@ func (mr *ServiceMockRecorder) CreateGym(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // CreateRoute mocks base method
-func (m *Service) CreateRoute(arg0 context.Context, arg1, arg2 string, arg3 route.Route) error {
+func (m *Service) CreateRoute(arg0 context.Context, arg1, arg2 string, arg3 route.Route) (*route.Route, error) {
 	ret := m.ctrl.Call(m, "CreateRoute", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*route.Route)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateRoute indicates an expected call of CreateRoute
@@ -253,10 +254,11 @@ func (mr *ServiceMockRecorder) UpdateGym(arg0, arg1, arg2 interface{}) *gomock.C
 }
 
 // UpdateRoute mocks base method
-func (m *Service) UpdateRoute(arg0 context.Context, arg1, arg2, arg3 string, arg4 route.Route) error {
+func (m *Service) UpdateRoute(arg0 context.Context, arg1, arg2, arg3 string, arg4 route.Route) (*route.Route, error) {
 	ret := m.ctrl.Call(m, "UpdateRoute", arg0, arg1, arg2, arg3, arg4)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*route.Route)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // UpdateRoute indicates an expected call of UpdateRoute
