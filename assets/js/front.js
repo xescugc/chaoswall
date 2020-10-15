@@ -342,13 +342,48 @@ $(function(){
       return this;
     },
     submitForm: function(e) {
-      var that = this
       e.preventDefault()
+      var that = this
       var data = getFormData(that.$el.find("form"))
       that.wall.routes.create(data, {
         wait: true,
         success: function(model, response, options) {
-          app.Router.navigate(that.wall.url(), { trigger: true })
+          model.wall = that.wall
+          app.Router.navigate(model.url(), { trigger: true })
+        },
+        error: function(model, response, options) {
+          console.log(response.responseText)
+        }
+      });
+    },
+  });
+
+  app.RouteEditView = Backbone.View.extend({
+    template: _.template($("#route-edit-tmpl").html()),
+    events: {
+      "submit form": "submitForm",
+    },
+    initialize: function() {
+      this.route = this.model
+      this.listenTo(this.route, "change", this.render)
+
+      this.route.fetch()
+    },
+    render: function() {
+      this.$el.html(this.template({route: this.route.toJSON()}));
+      return this;
+    },
+    submitForm: function(e) {
+      e.preventDefault()
+      var that = this
+      var data = getFormData(that.$el.find("form"))
+      that.route.set(data)
+
+      that.route.save(null, {
+        wait: true,
+        success: function(model, response, options) {
+          that.route = model
+          app.Router.navigate(that.route.url(), { trigger: true })
         },
         error: function(model, response, options) {
           console.log(response.responseText)
@@ -359,6 +394,10 @@ $(function(){
 
   app.RouteView = Backbone.View.extend({
     template: _.template($("#route-tmpl").html()),
+    events: {
+      "click button.edit": "renderEditRoute",
+      "click button.delete": "deleteRoute",
+    },
     initialize: function() {
       this.route = this.model
       this.listenTo(this.route, "change", this.render)
@@ -368,6 +407,23 @@ $(function(){
     render: function() {
       this.$el.html(this.template({route: this.route.toJSON()}));
       return this;
+    },
+    renderEditRoute: function(e) {
+      e.stopPropagation()
+      app.Router.navigate(this.route.url()+"/edit", { trigger: true })
+    },
+    deleteRoute: function(e) {
+      e.stopPropagation()
+      var that = this
+      that.route.destroy({
+        wait: true,
+        success: function(model, response, options) {
+          app.Router.navigate(that.route.wall.url(),{ trigger: true })
+        },
+        error: function(model, response, options) {
+          console.log(response.responseText)
+        },
+      })
     },
   });
 
@@ -386,7 +442,8 @@ $(function(){
       "gyms/:gym_canonical/walls/:wall_canonical/edit":        "wallEditRender",
       "gyms/:gym_canonical/walls/:wall_canonical/routes/new":  "routeNewRender",
 
-      "gyms/:gym_canonical/walls/:wall_canonical/routes/:route_canonical":  "routeRender",
+      "gyms/:gym_canonical/walls/:wall_canonical/routes/:route_canonical":      "routeRender",
+      "gyms/:gym_canonical/walls/:wall_canonical/routes/:route_canonical/edit": "routeEditRender",
 
       "*all":                 "homeRender",
     },
@@ -461,6 +518,21 @@ $(function(){
       rnv.wall = w
       this.layout.setContent(rnv)
     },
+    routeEditRender: function(gymCan, wallCan, routeCan) {
+      var g = new Gym()
+      g.set("canonical", gymCan)
+
+      var w = new Wall()
+      w.set("canonical", wallCan)
+      w.urlRoot = g.walls.url()
+
+      var r = new Route()
+      r.set("canonical", routeCan)
+      r.urlRoot = w.routes.url()
+
+      var rev = new app.RouteEditView({model: r});
+      this.layout.setContent(rev)
+    },
     routeRender: function(gymCan, wallCan, routeCan) {
       var g = new Gym()
       g.set("canonical", gymCan)
@@ -472,6 +544,7 @@ $(function(){
       var r = new Route()
       r.set("canonical", routeCan)
       r.urlRoot = w.routes.url()
+      r.wall = w
 
       var rv = new app.RouteView({model: r});
       this.layout.setContent(rv)
