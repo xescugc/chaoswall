@@ -38,6 +38,10 @@ type CreateRouteRequest struct {
 	Name string
 }
 
+type CreateRouteResponse struct {
+	Route route.Route
+}
+
 func MakeCreateRoute(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(CreateRouteRequest)
@@ -45,12 +49,14 @@ func MakeCreateRoute(s service.Service) endpoint.Endpoint {
 			Name: req.Name,
 		}
 
-		err := s.CreateRoute(ctx, req.GymCanonical, req.WallCanonical, r)
+		nr, err := s.CreateRoute(ctx, req.GymCanonical, req.WallCanonical, r)
 		if err != nil {
 			return nil, err
 		}
 
-		return nil, nil
+		return CreateRouteResponse{
+			Route: *nr,
+		}, nil
 	}
 }
 
@@ -86,6 +92,10 @@ type UpdateRouteRequest struct {
 	NewName string
 }
 
+type UpdateRouteResponse struct {
+	Route route.Route
+}
+
 func MakeUpdateRoute(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(UpdateRouteRequest)
@@ -94,12 +104,14 @@ func MakeUpdateRoute(s service.Service) endpoint.Endpoint {
 			Canonical: req.RouteCanonical,
 		}
 
-		err := s.UpdateRoute(ctx, req.GymCanonical, req.WallCanonical, req.RouteCanonical, r)
+		ur, err := s.UpdateRoute(ctx, req.GymCanonical, req.WallCanonical, req.RouteCanonical, r)
 		if err != nil {
 			return nil, err
 		}
 
-		return nil, nil
+		return UpdateRouteResponse{
+			Route: *ur,
+		}, nil
 	}
 }
 
