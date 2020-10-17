@@ -23,7 +23,7 @@ type Config struct {
 }
 
 // New returns a new Config from the viper.Viper, the ENV variables
-// are readed by using the convertion of "_" and all caps
+// are read by using the conversion of "-" to "_" and all caps
 func New(v *viper.Viper) (*Config, error) {
 	v.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	v.AutomaticEnv()
