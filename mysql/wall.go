@@ -5,12 +5,13 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/cycloidio/sqlr"
 	"github.com/xescugc/chaoswall/wall"
 	"golang.org/x/xerrors"
 )
 
 type WallRepository struct {
-	querier Querier
+	querier sqlr.Querier
 }
 
 type dbWall struct {
@@ -58,7 +59,7 @@ func dbWallFields(prefix string) string {
 }
 
 // NewWallRepository returns an implementation of the wall.Repository
-func NewWallRepository(db Querier) wall.Repository {
+func NewWallRepository(db sqlr.Querier) wall.Repository {
 	return &WallRepository{
 		querier: db,
 	}
@@ -161,7 +162,7 @@ func (r *WallRepository) DeleteByCanonical(ctx context.Context, gCan, wCan strin
 }
 
 // scanWall scans and returns a Wall from a row
-func scanWall(s Scanner) (*wall.Wall, error) {
+func scanWall(s sqlr.Scanner) (*wall.Wall, error) {
 	var g dbWall
 
 	err := s.Scan(g.scanFields()...)

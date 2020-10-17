@@ -5,12 +5,13 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/cycloidio/sqlr"
 	"github.com/xescugc/chaoswall/gym"
 	"golang.org/x/xerrors"
 )
 
 type GymRepository struct {
-	querier Querier
+	querier sqlr.Querier
 }
 
 type dbGym struct {
@@ -58,7 +59,7 @@ func dbGymFields(prefix string) string {
 }
 
 // NewGymRepository returns an implementation of the gym.Repository
-func NewGymRepository(db Querier) gym.Repository {
+func NewGymRepository(db sqlr.Querier) gym.Repository {
 	return &GymRepository{
 		querier: db,
 	}
@@ -144,7 +145,7 @@ func (r *GymRepository) DeleteByCanonical(ctx context.Context, gCan string) erro
 }
 
 // scanGym scans and returns a Gym from a row
-func scanGym(s Scanner) (*gym.Gym, error) {
+func scanGym(s sqlr.Scanner) (*gym.Gym, error) {
 	var g dbGym
 
 	err := s.Scan(g.scanFields()...)

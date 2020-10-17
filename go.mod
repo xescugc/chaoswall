@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/VividCortex/mysqlerr v0.0.0-20200629151747-c28746d985dd
+	github.com/cycloidio/sqlr v0.0.0-20201014161011-4e80dc542b89
 	github.com/dmarkham/enumer v1.5.1
 	github.com/go-kit/kit v0.8.0
 	github.com/go-sql-driver/mysql v1.5.0
