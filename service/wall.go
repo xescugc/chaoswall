@@ -15,10 +15,12 @@ func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wa
 	}
 	w.Canonical = slug.Make(w.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
-		_, err := uow.Walls().Create(ctx, gCan, w)
+		id, err := uow.Walls().Create(ctx, gCan, w)
 		if err != nil {
 			return xerrors.Errorf("failed to create wall: %w", err)
 		}
+
+		w.ID = id
 
 		return nil
 	}, s.walls)
