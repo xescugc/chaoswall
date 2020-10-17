@@ -100,8 +100,7 @@ func MakeUpdateRoute(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(UpdateRouteRequest)
 		r := route.Route{
-			Name:      req.NewName,
-			Canonical: req.RouteCanonical,
+			Name: req.NewName,
 		}
 
 		ur, err := s.UpdateRoute(ctx, req.GymCanonical, req.WallCanonical, req.RouteCanonical, r)
