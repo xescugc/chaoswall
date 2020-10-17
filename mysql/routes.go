@@ -5,12 +5,13 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/cycloidio/sqlr"
 	"github.com/xescugc/chaoswall/route"
 	"golang.org/x/xerrors"
 )
 
 type RouteRepository struct {
-	querier Querier
+	querier sqlr.Querier
 }
 
 type dbRoute struct {
@@ -58,7 +59,7 @@ func dbRouteFields(prefix string) string {
 }
 
 // NewRouteRepository returns an implementation of the route.Repository
-func NewRouteRepository(db Querier) route.Repository {
+func NewRouteRepository(db sqlr.Querier) route.Repository {
 	return &RouteRepository{
 		querier: db,
 	}
@@ -171,7 +172,7 @@ func (r *RouteRepository) DeleteByCanonical(ctx context.Context, gCan, wCan, rCa
 }
 
 // scanRoute scans and returns a Route from a row
-func scanRoute(s Scanner) (*route.Route, error) {
+func scanRoute(s sqlr.Scanner) (*route.Route, error) {
 	var g dbRoute
 
 	err := s.Scan(g.scanFields()...)
