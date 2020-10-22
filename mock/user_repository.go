@@ -36,6 +36,7 @@ func (m *UserRepository) EXPECT() *UserRepositoryMockRecorder {
 
 // Create mocks base method
 func (m *UserRepository) Create(arg0 context.Context, arg1 user.User) (uint32, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0, arg1)
 	ret0, _ := ret[0].(uint32)
 	ret1, _ := ret[1].(error)
@@ -44,11 +45,13 @@ func (m *UserRepository) Create(arg0 context.Context, arg1 user.User) (uint32, e
 
 // Create indicates an expected call of Create
 func (mr *UserRepositoryMockRecorder) Create(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*UserRepository)(nil).Create), arg0, arg1)
 }
 
 // DeleteByCanonical mocks base method
 func (m *UserRepository) DeleteByCanonical(arg0 context.Context, arg1 string) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteByCanonical", arg0, arg1)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -56,11 +59,13 @@ func (m *UserRepository) DeleteByCanonical(arg0 context.Context, arg1 string) er
 
 // DeleteByCanonical indicates an expected call of DeleteByCanonical
 func (mr *UserRepositoryMockRecorder) DeleteByCanonical(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByCanonical", reflect.TypeOf((*UserRepository)(nil).DeleteByCanonical), arg0, arg1)
 }
 
 // FindByCanonical mocks base method
 func (m *UserRepository) FindByCanonical(arg0 context.Context, arg1 string) (*user.User, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByCanonical", arg0, arg1)
 	ret0, _ := ret[0].(*user.User)
 	ret1, _ := ret[1].(error)
@@ -69,11 +74,13 @@ func (m *UserRepository) FindByCanonical(arg0 context.Context, arg1 string) (*us
 
 // FindByCanonical indicates an expected call of FindByCanonical
 func (mr *UserRepositoryMockRecorder) FindByCanonical(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByCanonical", reflect.TypeOf((*UserRepository)(nil).FindByCanonical), arg0, arg1)
 }
 
 // UpdateByCanonical mocks base method
 func (m *UserRepository) UpdateByCanonical(arg0 context.Context, arg1 string, arg2 user.User) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateByCanonical", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -81,5 +88,6 @@ func (m *UserRepository) UpdateByCanonical(arg0 context.Context, arg1 string, ar
 
 // UpdateByCanonical indicates an expected call of UpdateByCanonical
 func (mr *UserRepositoryMockRecorder) UpdateByCanonical(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateByCanonical", reflect.TypeOf((*UserRepository)(nil).UpdateByCanonical), arg0, arg1, arg2)
 }

@@ -39,6 +39,7 @@ func (m *Service) EXPECT() *ServiceMockRecorder {
 
 // AuthenticateUser mocks base method
 func (m *Service) AuthenticateUser(arg0 context.Context, arg1, arg2 string) (*user.User, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AuthenticateUser", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*user.User)
 	ret1, _ := ret[1].(error)
@@ -47,11 +48,13 @@ func (m *Service) AuthenticateUser(arg0 context.Context, arg1, arg2 string) (*us
 
 // AuthenticateUser indicates an expected call of AuthenticateUser
 func (mr *ServiceMockRecorder) AuthenticateUser(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthenticateUser", reflect.TypeOf((*Service)(nil).AuthenticateUser), arg0, arg1, arg2)
 }
 
 // CreateGym mocks base method
 func (m *Service) CreateGym(arg0 context.Context, arg1 gym.Gym) (*gym.Gym, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateGym", arg0, arg1)
 	ret0, _ := ret[0].(*gym.Gym)
 	ret1, _ := ret[1].(error)
@@ -60,11 +63,13 @@ func (m *Service) CreateGym(arg0 context.Context, arg1 gym.Gym) (*gym.Gym, error
 
 // CreateGym indicates an expected call of CreateGym
 func (mr *ServiceMockRecorder) CreateGym(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateGym", reflect.TypeOf((*Service)(nil).CreateGym), arg0, arg1)
 }
 
 // CreateRoute mocks base method
 func (m *Service) CreateRoute(arg0 context.Context, arg1, arg2 string, arg3 route.Route) (*route.Route, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateRoute", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*route.Route)
 	ret1, _ := ret[1].(error)
@@ -73,11 +78,13 @@ func (m *Service) CreateRoute(arg0 context.Context, arg1, arg2 string, arg3 rout
 
 // CreateRoute indicates an expected call of CreateRoute
 func (mr *ServiceMockRecorder) CreateRoute(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRoute", reflect.TypeOf((*Service)(nil).CreateRoute), arg0, arg1, arg2, arg3)
 }
 
 // CreateUser mocks base method
 func (m *Service) CreateUser(arg0 context.Context, arg1 user.User) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", arg0, arg1)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -85,11 +92,13 @@ func (m *Service) CreateUser(arg0 context.Context, arg1 user.User) error {
 
 // CreateUser indicates an expected call of CreateUser
 func (mr *ServiceMockRecorder) CreateUser(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*Service)(nil).CreateUser), arg0, arg1)
 }
 
 // CreateWall mocks base method
 func (m *Service) CreateWall(arg0 context.Context, arg1 string, arg2 wall.Wall) (*wall.Wall, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateWall", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*wall.Wall)
 	ret1, _ := ret[1].(error)
@@ -98,11 +107,13 @@ func (m *Service) CreateWall(arg0 context.Context, arg1 string, arg2 wall.Wall) 
 
 // CreateWall indicates an expected call of CreateWall
 func (mr *ServiceMockRecorder) CreateWall(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWall", reflect.TypeOf((*Service)(nil).CreateWall), arg0, arg1, arg2)
 }
 
 // DeleteGym mocks base method
 func (m *Service) DeleteGym(arg0 context.Context, arg1 string) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteGym", arg0, arg1)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -110,11 +121,13 @@ func (m *Service) DeleteGym(arg0 context.Context, arg1 string) error {
 
 // DeleteGym indicates an expected call of DeleteGym
 func (mr *ServiceMockRecorder) DeleteGym(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteGym", reflect.TypeOf((*Service)(nil).DeleteGym), arg0, arg1)
 }
 
 // DeleteRoute mocks base method
 func (m *Service) DeleteRoute(arg0 context.Context, arg1, arg2, arg3 string) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteRoute", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -122,11 +135,13 @@ func (m *Service) DeleteRoute(arg0 context.Context, arg1, arg2, arg3 string) err
 
 // DeleteRoute indicates an expected call of DeleteRoute
 func (mr *ServiceMockRecorder) DeleteRoute(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteRoute", reflect.TypeOf((*Service)(nil).DeleteRoute), arg0, arg1, arg2, arg3)
 }
 
 // DeleteUser mocks base method
 func (m *Service) DeleteUser(arg0 context.Context, arg1 string) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteUser", arg0, arg1)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -134,11 +149,13 @@ func (m *Service) DeleteUser(arg0 context.Context, arg1 string) error {
 
 // DeleteUser indicates an expected call of DeleteUser
 func (mr *ServiceMockRecorder) DeleteUser(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*Service)(nil).DeleteUser), arg0, arg1)
 }
 
 // DeleteWall mocks base method
 func (m *Service) DeleteWall(arg0 context.Context, arg1, arg2 string) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteWall", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -146,11 +163,13 @@ func (m *Service) DeleteWall(arg0 context.Context, arg1, arg2 string) error {
 
 // DeleteWall indicates an expected call of DeleteWall
 func (mr *ServiceMockRecorder) DeleteWall(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWall", reflect.TypeOf((*Service)(nil).DeleteWall), arg0, arg1, arg2)
 }
 
 // GetGym mocks base method
 func (m *Service) GetGym(arg0 context.Context, arg1 string) (*gym.Gym, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetGym", arg0, arg1)
 	ret0, _ := ret[0].(*gym.Gym)
 	ret1, _ := ret[1].(error)
@@ -159,11 +178,13 @@ func (m *Service) GetGym(arg0 context.Context, arg1 string) (*gym.Gym, error) {
 
 // GetGym indicates an expected call of GetGym
 func (mr *ServiceMockRecorder) GetGym(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGym", reflect.TypeOf((*Service)(nil).GetGym), arg0, arg1)
 }
 
 // GetGyms mocks base method
 func (m *Service) GetGyms(arg0 context.Context) ([]*gym.Gym, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetGyms", arg0)
 	ret0, _ := ret[0].([]*gym.Gym)
 	ret1, _ := ret[1].(error)
@@ -172,11 +193,13 @@ func (m *Service) GetGyms(arg0 context.Context) ([]*gym.Gym, error) {
 
 // GetGyms indicates an expected call of GetGyms
 func (mr *ServiceMockRecorder) GetGyms(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGyms", reflect.TypeOf((*Service)(nil).GetGyms), arg0)
 }
 
 // GetRoute mocks base method
 func (m *Service) GetRoute(arg0 context.Context, arg1, arg2, arg3 string) (*route.Route, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRoute", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*route.Route)
 	ret1, _ := ret[1].(error)
@@ -185,11 +208,13 @@ func (m *Service) GetRoute(arg0 context.Context, arg1, arg2, arg3 string) (*rout
 
 // GetRoute indicates an expected call of GetRoute
 func (mr *ServiceMockRecorder) GetRoute(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRoute", reflect.TypeOf((*Service)(nil).GetRoute), arg0, arg1, arg2, arg3)
 }
 
 // GetRoutes mocks base method
 func (m *Service) GetRoutes(arg0 context.Context, arg1, arg2 string) ([]*route.Route, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRoutes", arg0, arg1, arg2)
 	ret0, _ := ret[0].([]*route.Route)
 	ret1, _ := ret[1].(error)
@@ -198,11 +223,13 @@ func (m *Service) GetRoutes(arg0 context.Context, arg1, arg2 string) ([]*route.R
 
 // GetRoutes indicates an expected call of GetRoutes
 func (mr *ServiceMockRecorder) GetRoutes(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRoutes", reflect.TypeOf((*Service)(nil).GetRoutes), arg0, arg1, arg2)
 }
 
 // GetUser mocks base method
 func (m *Service) GetUser(arg0 context.Context, arg1 string) (*user.User, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUser", arg0, arg1)
 	ret0, _ := ret[0].(*user.User)
 	ret1, _ := ret[1].(error)
@@ -211,11 +238,13 @@ func (m *Service) GetUser(arg0 context.Context, arg1 string) (*user.User, error)
 
 // GetUser indicates an expected call of GetUser
 func (mr *ServiceMockRecorder) GetUser(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUser", reflect.TypeOf((*Service)(nil).GetUser), arg0, arg1)
 }
 
 // GetWall mocks base method
 func (m *Service) GetWall(arg0 context.Context, arg1, arg2 string) (*wall.Wall, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWall", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*wall.Wall)
 	ret1, _ := ret[1].(error)
@@ -224,11 +253,13 @@ func (m *Service) GetWall(arg0 context.Context, arg1, arg2 string) (*wall.Wall, 
 
 // GetWall indicates an expected call of GetWall
 func (mr *ServiceMockRecorder) GetWall(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWall", reflect.TypeOf((*Service)(nil).GetWall), arg0, arg1, arg2)
 }
 
 // GetWalls mocks base method
 func (m *Service) GetWalls(arg0 context.Context, arg1 string) ([]*wall.Wall, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWalls", arg0, arg1)
 	ret0, _ := ret[0].([]*wall.Wall)
 	ret1, _ := ret[1].(error)
@@ -237,11 +268,13 @@ func (m *Service) GetWalls(arg0 context.Context, arg1 string) ([]*wall.Wall, err
 
 // GetWalls indicates an expected call of GetWalls
 func (mr *ServiceMockRecorder) GetWalls(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWalls", reflect.TypeOf((*Service)(nil).GetWalls), arg0, arg1)
 }
 
 // UpdateGym mocks base method
 func (m *Service) UpdateGym(arg0 context.Context, arg1 string, arg2 gym.Gym) (*gym.Gym, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateGym", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*gym.Gym)
 	ret1, _ := ret[1].(error)
@@ -250,11 +283,13 @@ func (m *Service) UpdateGym(arg0 context.Context, arg1 string, arg2 gym.Gym) (*g
 
 // UpdateGym indicates an expected call of UpdateGym
 func (mr *ServiceMockRecorder) UpdateGym(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateGym", reflect.TypeOf((*Service)(nil).UpdateGym), arg0, arg1, arg2)
 }
 
 // UpdateRoute mocks base method
 func (m *Service) UpdateRoute(arg0 context.Context, arg1, arg2, arg3 string, arg4 route.Route) (*route.Route, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateRoute", arg0, arg1, arg2, arg3, arg4)
 	ret0, _ := ret[0].(*route.Route)
 	ret1, _ := ret[1].(error)
@@ -263,11 +298,13 @@ func (m *Service) UpdateRoute(arg0 context.Context, arg1, arg2, arg3 string, arg
 
 // UpdateRoute indicates an expected call of UpdateRoute
 func (mr *ServiceMockRecorder) UpdateRoute(arg0, arg1, arg2, arg3, arg4 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRoute", reflect.TypeOf((*Service)(nil).UpdateRoute), arg0, arg1, arg2, arg3, arg4)
 }
 
 // UpdateUser mocks base method
 func (m *Service) UpdateUser(arg0 context.Context, arg1 string, arg2 user.User) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateUser", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -275,11 +312,13 @@ func (m *Service) UpdateUser(arg0 context.Context, arg1 string, arg2 user.User) 
 
 // UpdateUser indicates an expected call of UpdateUser
 func (mr *ServiceMockRecorder) UpdateUser(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*Service)(nil).UpdateUser), arg0, arg1, arg2)
 }
 
 // UpdateWall mocks base method
 func (m *Service) UpdateWall(arg0 context.Context, arg1, arg2 string, arg3 wall.Wall) (*wall.Wall, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateWall", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*wall.Wall)
 	ret1, _ := ret[1].(error)
@@ -288,5 +327,6 @@ func (m *Service) UpdateWall(arg0 context.Context, arg1, arg2 string, arg3 wall.
 
 // UpdateWall indicates an expected call of UpdateWall
 func (mr *ServiceMockRecorder) UpdateWall(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWall", reflect.TypeOf((*Service)(nil).UpdateWall), arg0, arg1, arg2, arg3)
 }

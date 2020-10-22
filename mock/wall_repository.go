@@ -36,6 +36,7 @@ func (m *WallRepository) EXPECT() *WallRepositoryMockRecorder {
 
 // Create mocks base method
 func (m *WallRepository) Create(arg0 context.Context, arg1 string, arg2 wall.Wall) (uint32, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0, arg1, arg2)
 	ret0, _ := ret[0].(uint32)
 	ret1, _ := ret[1].(error)
@@ -44,11 +45,13 @@ func (m *WallRepository) Create(arg0 context.Context, arg1 string, arg2 wall.Wal
 
 // Create indicates an expected call of Create
 func (mr *WallRepositoryMockRecorder) Create(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*WallRepository)(nil).Create), arg0, arg1, arg2)
 }
 
 // DeleteByCanonical mocks base method
 func (m *WallRepository) DeleteByCanonical(arg0 context.Context, arg1, arg2 string) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteByCanonical", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -56,11 +59,13 @@ func (m *WallRepository) DeleteByCanonical(arg0 context.Context, arg1, arg2 stri
 
 // DeleteByCanonical indicates an expected call of DeleteByCanonical
 func (mr *WallRepositoryMockRecorder) DeleteByCanonical(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByCanonical", reflect.TypeOf((*WallRepository)(nil).DeleteByCanonical), arg0, arg1, arg2)
 }
 
 // Filter mocks base method
 func (m *WallRepository) Filter(arg0 context.Context, arg1 string) ([]*wall.Wall, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Filter", arg0, arg1)
 	ret0, _ := ret[0].([]*wall.Wall)
 	ret1, _ := ret[1].(error)
@@ -69,11 +74,13 @@ func (m *WallRepository) Filter(arg0 context.Context, arg1 string) ([]*wall.Wall
 
 // Filter indicates an expected call of Filter
 func (mr *WallRepositoryMockRecorder) Filter(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Filter", reflect.TypeOf((*WallRepository)(nil).Filter), arg0, arg1)
 }
 
 // FindByCanonical mocks base method
 func (m *WallRepository) FindByCanonical(arg0 context.Context, arg1, arg2 string) (*wall.Wall, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByCanonical", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*wall.Wall)
 	ret1, _ := ret[1].(error)
@@ -82,11 +89,13 @@ func (m *WallRepository) FindByCanonical(arg0 context.Context, arg1, arg2 string
 
 // FindByCanonical indicates an expected call of FindByCanonical
 func (mr *WallRepositoryMockRecorder) FindByCanonical(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByCanonical", reflect.TypeOf((*WallRepository)(nil).FindByCanonical), arg0, arg1, arg2)
 }
 
 // UpdateByCanonical mocks base method
 func (m *WallRepository) UpdateByCanonical(arg0 context.Context, arg1, arg2 string, arg3 wall.Wall) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateByCanonical", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -94,5 +103,6 @@ func (m *WallRepository) UpdateByCanonical(arg0 context.Context, arg1, arg2 stri
 
 // UpdateByCanonical indicates an expected call of UpdateByCanonical
 func (mr *WallRepositoryMockRecorder) UpdateByCanonical(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateByCanonical", reflect.TypeOf((*WallRepository)(nil).UpdateByCanonical), arg0, arg1, arg2, arg3)
 }
