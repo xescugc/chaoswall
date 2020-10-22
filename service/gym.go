@@ -15,10 +15,12 @@ func (s *service) CreateGym(ctx context.Context, g gym.Gym) (*gym.Gym, error) {
 	}
 	g.Canonical = slug.Make(g.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
-		_, err := uow.Gyms().Create(ctx, g)
+		id, err := uow.Gyms().Create(ctx, g)
 		if err != nil {
 			return xerrors.Errorf("failed to create gym: %w", err)
 		}
+
+		g.ID = id
 
 		return nil
 	}, s.gyms)

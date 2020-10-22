@@ -51,8 +51,8 @@ var (
 
 			// Initializing DB
 			logger.Log("msg", "MariaDB starting ...")
-			db, err := mysql.New(viper.GetString("db-host"), viper.GetInt("db-port"), viper.GetString("db-user"), viper.GetString("db-password"), mysql.Options{
-				DBName:          viper.GetString("db-name"),
+			db, err := mysql.New(cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPassword, mysql.Options{
+				DBName:          cfg.DBName,
 				MultiStatements: true,
 				ClientFoundRows: true,
 			})

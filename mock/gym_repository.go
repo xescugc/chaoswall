@@ -36,6 +36,7 @@ func (m *GymRepository) EXPECT() *GymRepositoryMockRecorder {
 
 // Create mocks base method
 func (m *GymRepository) Create(arg0 context.Context, arg1 gym.Gym) (uint32, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0, arg1)
 	ret0, _ := ret[0].(uint32)
 	ret1, _ := ret[1].(error)
@@ -44,11 +45,13 @@ func (m *GymRepository) Create(arg0 context.Context, arg1 gym.Gym) (uint32, erro
 
 // Create indicates an expected call of Create
 func (mr *GymRepositoryMockRecorder) Create(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*GymRepository)(nil).Create), arg0, arg1)
 }
 
 // DeleteByCanonical mocks base method
 func (m *GymRepository) DeleteByCanonical(arg0 context.Context, arg1 string) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteByCanonical", arg0, arg1)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -56,11 +59,13 @@ func (m *GymRepository) DeleteByCanonical(arg0 context.Context, arg1 string) err
 
 // DeleteByCanonical indicates an expected call of DeleteByCanonical
 func (mr *GymRepositoryMockRecorder) DeleteByCanonical(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByCanonical", reflect.TypeOf((*GymRepository)(nil).DeleteByCanonical), arg0, arg1)
 }
 
 // Filter mocks base method
 func (m *GymRepository) Filter(arg0 context.Context) ([]*gym.Gym, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Filter", arg0)
 	ret0, _ := ret[0].([]*gym.Gym)
 	ret1, _ := ret[1].(error)
@@ -69,11 +74,13 @@ func (m *GymRepository) Filter(arg0 context.Context) ([]*gym.Gym, error) {
 
 // Filter indicates an expected call of Filter
 func (mr *GymRepositoryMockRecorder) Filter(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Filter", reflect.TypeOf((*GymRepository)(nil).Filter), arg0)
 }
 
 // FindByCanonical mocks base method
 func (m *GymRepository) FindByCanonical(arg0 context.Context, arg1 string) (*gym.Gym, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByCanonical", arg0, arg1)
 	ret0, _ := ret[0].(*gym.Gym)
 	ret1, _ := ret[1].(error)
@@ -82,11 +89,13 @@ func (m *GymRepository) FindByCanonical(arg0 context.Context, arg1 string) (*gym
 
 // FindByCanonical indicates an expected call of FindByCanonical
 func (mr *GymRepositoryMockRecorder) FindByCanonical(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByCanonical", reflect.TypeOf((*GymRepository)(nil).FindByCanonical), arg0, arg1)
 }
 
 // UpdateByCanonical mocks base method
 func (m *GymRepository) UpdateByCanonical(arg0 context.Context, arg1 string, arg2 gym.Gym) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateByCanonical", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -94,5 +103,6 @@ func (m *GymRepository) UpdateByCanonical(arg0 context.Context, arg1 string, arg
 
 // UpdateByCanonical indicates an expected call of UpdateByCanonical
 func (mr *GymRepositoryMockRecorder) UpdateByCanonical(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateByCanonical", reflect.TypeOf((*GymRepository)(nil).UpdateByCanonical), arg0, arg1, arg2)
 }

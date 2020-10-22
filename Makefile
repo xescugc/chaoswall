@@ -41,7 +41,7 @@ $(PKGER):
 
 .PHONY: test
 test: ## Tests all the project
-	@go test ./...
+	@docker-compose -f docker/docker-compose.yml -f docker/develop.yml run --rm chaoswall go test ./...
 
 .PHONY: lint
 lint: $(GOLINT) $(GOIMPORTS) ## Runs the linter
@@ -65,7 +65,7 @@ mariadb-up: ## Stats the MariaDB service
 
 .PHONY: serve
 serve: ## Serves the Chaoswall service
-	@docker-compose -f docker/docker-compose.yml -f docker/develop.yml up --build chaoswall
+	@docker-compose -f docker/docker-compose.yml -f docker/develop.yml run --service-ports --rm chaoswall go run . serve
 
 .PHONY: down
 down: ## Stops everything

@@ -15,10 +15,12 @@ func (s *service) CreateRoute(ctx context.Context, gCan, wCan string, r route.Ro
 	}
 	r.Canonical = slug.Make(r.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
-		_, err := uow.Routes().Create(ctx, gCan, wCan, r)
+		id, err := uow.Routes().Create(ctx, gCan, wCan, r)
 		if err != nil {
 			return xerrors.Errorf("failed to create route: %w", err)
 		}
+
+		r.ID = id
 
 		return nil
 	}, s.routes)

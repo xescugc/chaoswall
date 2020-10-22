@@ -36,6 +36,7 @@ func (m *RouteRepository) EXPECT() *RouteRepositoryMockRecorder {
 
 // Create mocks base method
 func (m *RouteRepository) Create(arg0 context.Context, arg1, arg2 string, arg3 route.Route) (uint32, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(uint32)
 	ret1, _ := ret[1].(error)
@@ -44,11 +45,13 @@ func (m *RouteRepository) Create(arg0 context.Context, arg1, arg2 string, arg3 r
 
 // Create indicates an expected call of Create
 func (mr *RouteRepositoryMockRecorder) Create(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*RouteRepository)(nil).Create), arg0, arg1, arg2, arg3)
 }
 
 // DeleteByCanonical mocks base method
 func (m *RouteRepository) DeleteByCanonical(arg0 context.Context, arg1, arg2, arg3 string) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteByCanonical", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -56,11 +59,13 @@ func (m *RouteRepository) DeleteByCanonical(arg0 context.Context, arg1, arg2, ar
 
 // DeleteByCanonical indicates an expected call of DeleteByCanonical
 func (mr *RouteRepositoryMockRecorder) DeleteByCanonical(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByCanonical", reflect.TypeOf((*RouteRepository)(nil).DeleteByCanonical), arg0, arg1, arg2, arg3)
 }
 
 // Filter mocks base method
 func (m *RouteRepository) Filter(arg0 context.Context, arg1, arg2 string) ([]*route.Route, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Filter", arg0, arg1, arg2)
 	ret0, _ := ret[0].([]*route.Route)
 	ret1, _ := ret[1].(error)
@@ -69,11 +74,13 @@ func (m *RouteRepository) Filter(arg0 context.Context, arg1, arg2 string) ([]*ro
 
 // Filter indicates an expected call of Filter
 func (mr *RouteRepositoryMockRecorder) Filter(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Filter", reflect.TypeOf((*RouteRepository)(nil).Filter), arg0, arg1, arg2)
 }
 
 // FindByCanonical mocks base method
 func (m *RouteRepository) FindByCanonical(arg0 context.Context, arg1, arg2, arg3 string) (*route.Route, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByCanonical", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*route.Route)
 	ret1, _ := ret[1].(error)
@@ -82,11 +89,13 @@ func (m *RouteRepository) FindByCanonical(arg0 context.Context, arg1, arg2, arg3
 
 // FindByCanonical indicates an expected call of FindByCanonical
 func (mr *RouteRepositoryMockRecorder) FindByCanonical(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByCanonical", reflect.TypeOf((*RouteRepository)(nil).FindByCanonical), arg0, arg1, arg2, arg3)
 }
 
 // UpdateByCanonical mocks base method
 func (m *RouteRepository) UpdateByCanonical(arg0 context.Context, arg1, arg2, arg3 string, arg4 route.Route) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateByCanonical", arg0, arg1, arg2, arg3, arg4)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -94,5 +103,6 @@ func (m *RouteRepository) UpdateByCanonical(arg0 context.Context, arg1, arg2, ar
 
 // UpdateByCanonical indicates an expected call of UpdateByCanonical
 func (mr *RouteRepositoryMockRecorder) UpdateByCanonical(arg0, arg1, arg2, arg3, arg4 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateByCanonical", reflect.TypeOf((*RouteRepository)(nil).UpdateByCanonical), arg0, arg1, arg2, arg3, arg4)
 }

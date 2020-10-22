@@ -2,7 +2,7 @@ version: "3"
 services:
   chaoswall:
     volumes:
-      - cache:/go
+      - cache:/root/.cache/go-build
     depends_on:
       - mariadb
     networks:

@@ -4,20 +4,36 @@ go 1.15
 
 require (
 	github.com/VividCortex/mysqlerr v0.0.0-20200629151747-c28746d985dd
-	github.com/cycloidio/sqlr v0.0.0-20201014161011-4e80dc542b89
+	github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6 // indirect
+	github.com/cycloidio/sqlr v1.0.0
 	github.com/dmarkham/enumer v1.5.1
-	github.com/go-kit/kit v0.8.0
+	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/go-kit/kit v0.10.0
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/gobuffalo/here v0.6.2 // indirect
 	github.com/golang/mock v1.4.4
-	github.com/gorilla/handlers v1.5.0
+	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/gosimple/slug v1.9.0
 	github.com/lopezator/migrator v0.3.0
+	github.com/magiconair/properties v1.8.4 // indirect
 	github.com/markbates/pkger v0.17.1
-	github.com/spf13/cobra v1.0.0
+	github.com/mitchellh/mapstructure v1.3.3 // indirect
+	github.com/pascaldekloe/name v1.0.1 // indirect
+	github.com/pelletier/go-toml v1.8.1 // indirect
+	github.com/spf13/afero v1.4.1 // indirect
+	github.com/spf13/cast v1.3.1 // indirect
+	github.com/spf13/cobra v1.1.1
+	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.4.0
-	golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3
-	golang.org/x/tools v0.0.0-20200221224223-e1da425f72fd
-	golang.org/x/xerrors v0.0.0-20191011141410-1b5146add898
+	github.com/spf13/viper v1.7.1
+	github.com/stretchr/testify v1.5.1
+	github.com/ugorji/go v1.1.4 // indirect
+	github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77 // indirect
+	golang.org/x/lint v0.0.0-20200302205851-738671d3881b
+	golang.org/x/sys v0.0.0-20201020230747-6e5568b54d1a // indirect
+	golang.org/x/tools v0.0.0-20201022035929-9cf592e881e9
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
+	gopkg.in/ini.v1 v1.62.0 // indirect
+	gopkg.in/yaml.v2 v2.3.0 // indirect
 )

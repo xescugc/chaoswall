@@ -39,6 +39,7 @@ func (m *UnitOfWork) EXPECT() *UnitOfWorkMockRecorder {
 
 // Gyms mocks base method
 func (m *UnitOfWork) Gyms() gym.Repository {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Gyms")
 	ret0, _ := ret[0].(gym.Repository)
 	return ret0
@@ -46,11 +47,13 @@ func (m *UnitOfWork) Gyms() gym.Repository {
 
 // Gyms indicates an expected call of Gyms
 func (mr *UnitOfWorkMockRecorder) Gyms() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Gyms", reflect.TypeOf((*UnitOfWork)(nil).Gyms))
 }
 
 // Holds mocks base method
 func (m *UnitOfWork) Holds() hold.Repository {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Holds")
 	ret0, _ := ret[0].(hold.Repository)
 	return ret0
@@ -58,11 +61,13 @@ func (m *UnitOfWork) Holds() hold.Repository {
 
 // Holds indicates an expected call of Holds
 func (mr *UnitOfWorkMockRecorder) Holds() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Holds", reflect.TypeOf((*UnitOfWork)(nil).Holds))
 }
 
 // Routes mocks base method
 func (m *UnitOfWork) Routes() route.Repository {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Routes")
 	ret0, _ := ret[0].(route.Repository)
 	return ret0
@@ -70,11 +75,13 @@ func (m *UnitOfWork) Routes() route.Repository {
 
 // Routes indicates an expected call of Routes
 func (mr *UnitOfWorkMockRecorder) Routes() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Routes", reflect.TypeOf((*UnitOfWork)(nil).Routes))
 }
 
 // Users mocks base method
 func (m *UnitOfWork) Users() user.Repository {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Users")
 	ret0, _ := ret[0].(user.Repository)
 	return ret0
@@ -82,11 +89,13 @@ func (m *UnitOfWork) Users() user.Repository {
 
 // Users indicates an expected call of Users
 func (mr *UnitOfWorkMockRecorder) Users() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Users", reflect.TypeOf((*UnitOfWork)(nil).Users))
 }
 
 // Walls mocks base method
 func (m *UnitOfWork) Walls() wall.Repository {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Walls")
 	ret0, _ := ret[0].(wall.Repository)
 	return ret0
@@ -94,5 +103,6 @@ func (m *UnitOfWork) Walls() wall.Repository {
 
 // Walls indicates an expected call of Walls
 func (mr *UnitOfWorkMockRecorder) Walls() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Walls", reflect.TypeOf((*UnitOfWork)(nil).Walls))
 }

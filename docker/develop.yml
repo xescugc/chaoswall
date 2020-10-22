@@ -1,9 +1,11 @@
 version: "3"
 services:
   chaoswall:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.chaoswall.dev
+    image: golang:1.15.3
+    volumes:
+      - ../:/go/src/github.com/xescugc/chaoswall
+      - $GOPATH/pkg/mod:/go/pkg/mod
+    working_dir: /go/src/github.com/xescugc/chaoswall
     ports:
       - '4000:4000'
     environment:
