@@ -14,6 +14,7 @@ type Service struct {
 	Gyms   *mock.GymRepository
 	Walls  *mock.WallRepository
 	Routes *mock.RouteRepository
+	Holds  *mock.HoldRepository
 
 	S service.Service
 
@@ -26,21 +27,24 @@ func newService(t *testing.T) Service {
 	gr := mock.NewGymRepository(ctrl)
 	wr := mock.NewWallRepository(ctrl)
 	rr := mock.NewRouteRepository(ctrl)
+	hr := mock.NewHoldRepository(ctrl)
 
 	suow := func(ctx context.Context, uowFn func(uow unitwork.UnitOfWork) error, reps ...interface{}) error {
 		uow := mock.NewUnitOfWork(ctrl)
 		uow.EXPECT().Gyms().Return(gr).AnyTimes()
 		uow.EXPECT().Walls().Return(wr).AnyTimes()
 		uow.EXPECT().Routes().Return(rr).AnyTimes()
+		uow.EXPECT().Holds().Return(hr).AnyTimes()
 		return uowFn(uow)
 	}
 
-	s := service.New(nil, gr, wr, nil, rr, suow)
+	s := service.New(nil, gr, wr, hr, rr, suow)
 
 	return Service{
 		Gyms:   gr,
 		Walls:  wr,
 		Routes: rr,
+		Holds:  hr,
 
 		S: s,
 
