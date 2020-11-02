@@ -1,5 +1,6 @@
 package hold
 
 type Hold struct {
-	X, Y float64
+	ID         uint32
+	X, Y, Size int
 }

@@ -6,6 +6,5 @@ import "context"
 
 type Repository interface {
 	Create(ctx context.Context, gCan, wCan string, h Hold) (uint32, error)
-	Filter(ctx context.Context, gCan, wCan string) ([]*Hold, error)
-	Delete(ctx context.Context, gCan, wCan string) error
+	DeleteByWallCanonical(ctx context.Context, gCan, wCan string) error
 }
