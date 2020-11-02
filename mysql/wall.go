@@ -18,6 +18,7 @@ type dbWall struct {
 	ID        sql.NullInt64
 	Name      sql.NullString
 	Canonical sql.NullString
+	Image     []byte
 }
 
 func newDbWall(w wall.Wall) *dbWall {
@@ -25,6 +26,7 @@ func newDbWall(w wall.Wall) *dbWall {
 		ID:        ToNullInt64(w.ID),
 		Name:      ToNullString(w.Name),
 		Canonical: ToNullString(w.Canonical),
+		Image:     w.Image,
 	}
 }
 
@@ -33,6 +35,7 @@ func (w *dbWall) toDomainEntity() *wall.Wall {
 		ID:        ToUint32(w.ID),
 		Name:      w.Name.String,
 		Canonical: w.Canonical.String,
+		Image:     w.Image,
 	}
 }
 
@@ -41,11 +44,12 @@ func (w *dbWall) scanFields() []interface{} {
 		&w.ID,
 		&w.Name,
 		&w.Canonical,
+		&w.Image,
 	}
 }
 
 func dbWallFields(prefix string) string {
-	fields := []string{"id", "name", "canonical"}
+	fields := []string{"id", "name", "canonical", "image"}
 	s := ""
 	for i, f := range fields {
 		format := " %s.%s,"
@@ -68,15 +72,15 @@ func NewWallRepository(db sqlr.Querier) wall.Repository {
 func (r *WallRepository) Create(ctx context.Context, gCan string, w wall.Wall) (uint32, error) {
 	dbw := newDbWall(w)
 	res, err := r.querier.ExecContext(ctx, `
-		INSERT INTO walls (name, canonical, gym_id)
-		SELECT ?, ?, g.id
+		INSERT INTO walls (name, canonical, image, gym_id)
+		SELECT ?, ?, ?, g.id
 		FROM
 			(
 				SELECT gyms.id
 				FROM gyms
 				WHERE gyms.canonical = ?
 			) AS g
-	`, dbw.Name, dbw.Canonical, gCan)
+	`, dbw.Name, dbw.Canonical, dbw.Image, gCan)
 
 	if err != nil {
 		return 0, xerrors.Errorf("failed to ExecContext: %w", err)

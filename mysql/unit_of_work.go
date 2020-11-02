@@ -81,6 +81,10 @@ func (uow *unitOfWork) add(repository interface{}) error {
 		r := *rep
 		r.querier = uow.tx
 		uow.routeRepository = &r
+	case *HoldRepository:
+		r := *rep
+		r.querier = uow.tx
+		uow.holdRepository = &r
 
 	default:
 		return xerrors.Errorf("not supported repository %T", rep)

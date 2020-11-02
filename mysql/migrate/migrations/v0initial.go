@@ -18,6 +18,7 @@ var V0Initial = Migration{
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			name VARCHAR(255),
 			canonical VARCHAR(30),
+			image LONGBLOB,
 			gym_id INT UNSIGNED NOT NULL,
 
 			CONSTRAINT fk__walls__gyms
@@ -32,6 +33,7 @@ var V0Initial = Migration{
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			x SMALLINT UNSIGNED,
 			y SMALLINT UNSIGNED,
+			size SMALLINT UNSIGNED,
 			wall_id INT UNSIGNED NOT NULL,
 
 			CONSTRAINT fk__holds__walls
