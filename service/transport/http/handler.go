@@ -61,6 +61,11 @@ func MakeHandler(s service.Service) http.Handler {
 		decodeCreateWallRequest,
 		encodeCreateWallResponse,
 	)
+	previewWallImageHandler := kithttp.NewServer(
+		endpoint.MakePreviewWallImage(s),
+		decodePreviewWallImageRequest,
+		encodePreviewWallImageResponse,
+	)
 	getWallHandler := kithttp.NewServer(
 		endpoint.MakeGetWall(s),
 		decodeGetWallRequest,
@@ -116,6 +121,7 @@ func MakeHandler(s service.Service) http.Handler {
 
 	jsonr.Handle("/gyms/{gym_canonical}/walls", getWallsHandler).Methods("GET")
 	jsonr.Handle("/gyms/{gym_canonical}/walls", createWallHandler).Methods("POST")
+	jsonr.Handle("/gyms/{gym_canonical}/walls-image", previewWallImageHandler).Methods("POST")
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}", getWallHandler).Methods("GET")
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}", updateWallHandler).Methods("PUT")
 	jsonr.Handle("/gyms/{gym_canonical}/walls/{wall_canonical}", deleteWallHandler).Methods("DELETE")
