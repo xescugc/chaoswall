@@ -1,7 +1,7 @@
 version: "3"
 services:
   chaoswall:
-    image: golang:1.15.3
+    image: gocv/opencv:4.5.0
     volumes:
       - ../:/go/src/github.com/xescugc/chaoswall
       - $GOPATH/pkg/mod:/go/pkg/mod
