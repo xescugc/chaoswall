@@ -75,7 +75,8 @@ func newService(t *testing.T) service.Service {
 	gr := mysql.NewGymRepository(db)
 	wr := mysql.NewWallRepository(db)
 	rr := mysql.NewRouteRepository(db)
+	hr := mysql.NewHoldRepository(db)
 	suow := mysql.StartUnitOfWork(db)
 
-	return service.New(nil, gr, wr, nil, rr, suow)
+	return service.New(nil, gr, wr, hr, rr, suow)
 }
