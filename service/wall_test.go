@@ -2,8 +2,10 @@ package service_test
 
 import (
 	"context"
+	"io/ioutil"
 	"testing"
 
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/xescugc/chaoswall/wall"
@@ -11,6 +13,9 @@ import (
 
 func TestCreateWall(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
+		imgb, err := ioutil.ReadFile("./e2e/testdata/input-wall.jpg")
+		require.NoError(t, err)
+
 		var (
 			s   = newService(t)
 			ctx = context.Background()
@@ -18,12 +23,15 @@ func TestCreateWall(t *testing.T) {
 			gCan = "gym-can"
 
 			wID uint32 = 2
-			w          = wall.Wall{Name: "Name"}
-			cw         = wall.Wall{Name: w.Name, Canonical: "name"}
-			ew         = wall.Wall{ID: wID, Name: w.Name, Canonical: cw.Canonical}
+			w          = wall.Wall{Name: "Name", Image: imgb}
+			cw         = wall.Wall{Name: w.Name, Canonical: "name", Image: w.Image}
+			ew         = wall.Wall{ID: wID, Name: w.Name, Canonical: cw.Canonical, Image: w.Image}
 		)
 
 		s.Walls.EXPECT().Create(ctx, gCan, cw).Return(wID, nil)
+		// As we do not want to test all the X and Y we just expect it to be called
+		// as many times as needed
+		s.Holds.EXPECT().Create(ctx, gCan, cw.Canonical, gomock.Any()).Return(uint32(1), nil).MinTimes(1)
 
 		rw, err := s.S.CreateWall(ctx, gCan, w)
 		require.NoError(t, err)
@@ -43,6 +51,21 @@ func TestCreateWall(t *testing.T) {
 		rw, err := s.S.CreateWall(ctx, gCan, w)
 		require.Nil(t, rw)
 		assert.Error(t, err, "wall Name is required")
+	})
+
+	t.Run("RequiredImage", func(t *testing.T) {
+		var (
+			s   = newService(t)
+			ctx = context.Background()
+
+			gCan = "gym-can"
+
+			w = wall.Wall{Name: "Name"}
+		)
+
+		rw, err := s.S.CreateWall(ctx, gCan, w)
+		require.Nil(t, rw)
+		assert.Error(t, err, "wall Image is required")
 	})
 }
 
@@ -87,6 +110,9 @@ func TestGetWall(t *testing.T) {
 
 func TestUpdateWall(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
+		imgb, err := ioutil.ReadFile("./e2e/testdata/input-wall.jpg")
+		require.NoError(t, err)
+
 		var (
 			s   = newService(t)
 			ctx = context.Background()
@@ -94,11 +120,15 @@ func TestUpdateWall(t *testing.T) {
 			gCan = "gym-can"
 			wCan = "wall-can"
 
-			w  = wall.Wall{Name: "New Name"}
-			uw = wall.Wall{Name: w.Name, Canonical: "new-name"}
+			w  = wall.Wall{Name: "New Name", Image: imgb}
+			uw = wall.Wall{Name: w.Name, Canonical: "new-name", Image: w.Image}
 		)
 
 		s.Walls.EXPECT().UpdateByCanonical(ctx, gCan, wCan, uw).Return(nil)
+		s.Holds.EXPECT().DeleteByWallCanonical(ctx, gCan, uw.Canonical).Return(nil)
+		// As we do not want to test all the X and Y we just expect it to be called
+		// as many times as needed
+		s.Holds.EXPECT().Create(ctx, gCan, uw.Canonical, gomock.Any()).Return(uint32(1), nil).MinTimes(1)
 
 		rw, err := s.S.UpdateWall(ctx, gCan, wCan, w)
 		require.NoError(t, err)
@@ -118,6 +148,21 @@ func TestUpdateWall(t *testing.T) {
 		rw, err := s.S.UpdateWall(ctx, gCan, wCan, w)
 		require.Nil(t, rw)
 		assert.Error(t, err, "wall Name is required")
+	})
+
+	t.Run("RequiredImage", func(t *testing.T) {
+		var (
+			s    = newService(t)
+			ctx  = context.Background()
+			gCan = "gym-can"
+			wCan = "wall-can"
+
+			w = wall.Wall{Name: "Name"}
+		)
+
+		rw, err := s.S.UpdateWall(ctx, gCan, wCan, w)
+		require.Nil(t, rw)
+		assert.Error(t, err, "wall Image is required")
 	})
 }
 

@@ -33,6 +33,7 @@ func MakeGetWalls(s service.Service) endpoint.Endpoint {
 type CreateWallRequest struct {
 	GymCanonical string
 	Name         string
+	Image        []byte
 }
 
 type CreateWallResponse struct {
@@ -43,7 +44,8 @@ func MakeCreateWall(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(CreateWallRequest)
 		w := wall.Wall{
-			Name: req.Name,
+			Name:  req.Name,
+			Image: req.Image,
 		}
 
 		nw, err := s.CreateWall(ctx, req.GymCanonical, w)
@@ -85,7 +87,8 @@ type UpdateWallRequest struct {
 
 	WallCanonical string
 
-	NewName string
+	NewName  string
+	NewImage []byte
 }
 
 type UpdateWallResponse struct {
@@ -96,7 +99,8 @@ func MakeUpdateWall(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(UpdateWallRequest)
 		w := wall.Wall{
-			Name: req.NewName,
+			Name:  req.NewName,
+			Image: req.NewImage,
 		}
 
 		uw, err := s.UpdateWall(ctx, req.GymCanonical, req.WallCanonical, w)
@@ -126,5 +130,30 @@ func MakeDeleteWall(s service.Service) endpoint.Endpoint {
 		}
 
 		return nil, nil
+	}
+}
+
+type PreviewWallImageRequest struct {
+	GymCanonical string
+
+	Image []byte
+}
+
+type PreviewWallImageResponse struct {
+	Image []byte
+}
+
+func MakePreviewWallImage(s service.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(PreviewWallImageRequest)
+
+		img, err := s.PreviewWallImage(ctx, req.GymCanonical, req.Image)
+		if err != nil {
+			return nil, err
+		}
+
+		return PreviewWallImageResponse{
+			Image: img,
+		}, nil
 	}
 }

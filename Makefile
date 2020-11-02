@@ -49,7 +49,7 @@ lint: $(GOLINT) $(GOIMPORTS) ## Runs the linter
 
 .PHONY: generate
 generate: $(ENUMER) $(MOCKGEN) $(PKGER) ## Generates the needed code
-	@rm -rf ./mock/* && go generate ./...
+	@go generate ./...
 
 .PHONY: build
 build: ## Builds the binary

@@ -21,7 +21,7 @@ func encodeGetWallsResponse(_ context.Context, w http.ResponseWriter, response i
 	walls := make([]models.Wall, 0, len(res.Walls))
 
 	for _, w := range res.Walls {
-		walls = append(walls, models.Wall(*w))
+		walls = append(walls, models.NewWall(*w))
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -37,14 +37,22 @@ func decodeCreateWallRequest(_ context.Context, r *http.Request) (interface{}, e
 	if err != nil {
 		return nil, err
 	}
+
+	image := body["image"].(string)
+	out64, err := decodeImage(image)
+	if err != nil {
+		return nil, err
+	}
+
 	return endpoint.CreateWallRequest{
 		GymCanonical: vars["gym_canonical"],
 		Name:         body["name"].(string),
+		Image:        out64,
 	}, nil
 }
 func encodeCreateWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.CreateWallResponse)
-	wall := models.Wall(res.Wall)
+	wall := models.NewWall(res.Wall)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(wall))
@@ -61,7 +69,7 @@ func decodeGetWallRequest(_ context.Context, r *http.Request) (interface{}, erro
 }
 func encodeGetWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.GetWallResponse)
-	wall := models.Wall(res.Wall)
+	wall := models.NewWall(res.Wall)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(wall))
@@ -77,16 +85,23 @@ func decodeUpdateWallRequest(_ context.Context, r *http.Request) (interface{}, e
 		return nil, err
 	}
 
+	image := body["image"].(string)
+	out64, err := decodeImage(image)
+	if err != nil {
+		return nil, err
+	}
+
 	return endpoint.UpdateWallRequest{
 		GymCanonical:  vars["gym_canonical"],
 		WallCanonical: vars["wall_canonical"],
 
-		NewName: body["name"].(string),
+		NewName:  body["name"].(string),
+		NewImage: out64,
 	}, nil
 }
 func encodeUpdateWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.UpdateWallResponse)
-	wall := models.Wall(res.Wall)
+	wall := models.NewWall(res.Wall)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(wall))
@@ -105,6 +120,36 @@ func encodeDeleteWallResponse(_ context.Context, w http.ResponseWriter, response
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(http.StatusNoContent)
 	json.NewEncoder(w).Encode(nil)
+
+	return nil
+}
+
+func decodePreviewWallImageRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	vars := mux.Vars(r)
+	var body map[string]interface{}
+	err := json.NewDecoder(r.Body).Decode(&body)
+	if err != nil {
+		return nil, err
+	}
+
+	image := body["image"].(string)
+	out64, err := decodeImage(image)
+	if err != nil {
+		return nil, err
+	}
+
+	return endpoint.PreviewWallImageRequest{
+		GymCanonical: vars["gym_canonical"],
+
+		Image: out64,
+	}, nil
+}
+func encodePreviewWallImageResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(endpoint.PreviewWallImageResponse)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
+	wi := models.NewWallImage(res.Image)
+	json.NewEncoder(w).Encode(dataResponse(wi))
 
 	return nil
 }

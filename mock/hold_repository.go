@@ -49,31 +49,16 @@ func (mr *HoldRepositoryMockRecorder) Create(arg0, arg1, arg2, arg3 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*HoldRepository)(nil).Create), arg0, arg1, arg2, arg3)
 }
 
-// Delete mocks base method
-func (m *HoldRepository) Delete(arg0 context.Context, arg1, arg2 string) error {
+// DeleteByWallCanonical mocks base method
+func (m *HoldRepository) DeleteByWallCanonical(arg0 context.Context, arg1, arg2 string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", arg0, arg1, arg2)
+	ret := m.ctrl.Call(m, "DeleteByWallCanonical", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Delete indicates an expected call of Delete
-func (mr *HoldRepositoryMockRecorder) Delete(arg0, arg1, arg2 interface{}) *gomock.Call {
+// DeleteByWallCanonical indicates an expected call of DeleteByWallCanonical
+func (mr *HoldRepositoryMockRecorder) DeleteByWallCanonical(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*HoldRepository)(nil).Delete), arg0, arg1, arg2)
-}
-
-// Filter mocks base method
-func (m *HoldRepository) Filter(arg0 context.Context, arg1, arg2 string) ([]*hold.Hold, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Filter", arg0, arg1, arg2)
-	ret0, _ := ret[0].([]*hold.Hold)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Filter indicates an expected call of Filter
-func (mr *HoldRepositoryMockRecorder) Filter(arg0, arg1, arg2 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Filter", reflect.TypeOf((*HoldRepository)(nil).Filter), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByWallCanonical", reflect.TypeOf((*HoldRepository)(nil).DeleteByWallCanonical), arg0, arg1, arg2)
 }

@@ -30,6 +30,10 @@ func ToNullInt64(u uint32) sql.NullInt64 {
 	return sql.NullInt64{Int64: int64(u), Valid: u != 0}
 }
 
+func ToNullIInt64(i int) sql.NullInt64 {
+	return sql.NullInt64{Int64: int64(i), Valid: i != 0}
+}
+
 // ToUint32 returns uint32 extracted from the sql.NullInt64
 func ToUint32(n sql.NullInt64) uint32 {
 	return uint32(n.Int64)

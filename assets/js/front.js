@@ -230,25 +230,65 @@ $(function(){
     template: _.template($("#wall-new-tmpl").html()),
     events: {
       "submit form": "submitForm",
+      "change #image": "changePreview",
     },
     render: function() {
       this.$el.html(this.template());
+      this.beforePreview = this.$el.find("#before-preview")
+      this.afterPreview = this.$el.find("#after-preview")
       return this;
     },
     submitForm: function(e) {
       e.preventDefault()
       var that = this
       var data = getFormData(that.$el.find("form"))
-      that.gym.walls.create(data, {
-        wait: true,
-        success: function(model, response, options) {
-          model.gym = that.gym
-          app.Router.navigate(model.url(), { trigger: true })
-        },
-        error: function(model, response, options) {
-          console.log(response.responseText)
-        }
-      });
+      var file = that.$el.find('input[name="image"]')[0].files[0]; 
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        data.image = reader.result;
+        that.gym.walls.create(data, {
+          wait: true,
+          success: function(model, response, options) {
+            model.gym = that.gym
+            app.Router.navigate(model.url(), { trigger: true })
+          },
+          error: function(model, response, options) {
+            console.log(response.responseText)
+          }
+        });
+      }
+      reader.readAsDataURL(file)
+    },
+    changePreview: function(e) {
+      e.preventDefault()
+      var that = this
+      var file = that.$el.find('input[name="image"]')[0].files[0]; 
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        var pImage = new Image();
+        pImage.style.width = "100%";
+        pImage.title = file.name;
+        pImage.src = reader.result
+        that.beforePreview.html(pImage)
+        $.ajax({
+          url: that.gym.url()+"/walls-image",
+          data: JSON.stringify({ image: reader.result }),
+          type: "POST",
+          contentType: 'application/json',
+          processData: false,
+          success: function(data) {
+            var vpImage = new Image();
+            vpImage.style.width = "100%";
+            vpImage.title = file.name;
+            vpImage.src = data.data.image;
+            that.afterPreview.html(vpImage)
+          },
+          error: function(data) {
+            console.log("error", data)
+          },
+        })
+      }
+      reader.readAsDataURL(file)
     },
   });
 
@@ -256,6 +296,7 @@ $(function(){
     template: _.template($("#wall-edit-tmpl").html()),
     events: {
       "submit form": "submitForm",
+      "change #image": "changePreview",
     },
     initialize: function() {
       this.wall = this.model
@@ -265,24 +306,82 @@ $(function(){
     },
     render: function() {
       this.$el.html(this.template({wall: this.wall.toJSON()}));
+      this.beforePreview = this.$el.find("#before-preview")
+      this.afterPreview = this.$el.find("#after-preview")
+
+      var pImage = new Image();
+      pImage.style.width = "100%";
+      pImage.src = this.wall.get("image")
+      this.beforePreview.html(pImage)
+
       return this;
     },
     submitForm: function(e) {
       e.preventDefault()
       var that = this
       var data = getFormData(that.$el.find("form"))
+      var file = that.$el.find('input[name="image"]')[0].files[0]; 
+      var reader = new FileReader();
       that.wall.set(data)
-
-      that.wall.save(null, {
-        wait: true,
-        success: function(model, response, options) {
-          that.wall = model
-          app.Router.navigate(that.wall.url(), { trigger: true })
-        },
-        error: function(model, response, options) {
-          console.log(response.responseText)
+      if (file === undefined) {
+        that.wall.save(null, {
+          wait: true,
+          success: function(model, response, options) {
+            model.gym = that.gym
+            app.Router.navigate(model.url(), { trigger: true })
+          },
+          error: function(model, response, options) {
+            console.log(response.responseText)
+          }
+        });
+      } else {
+        reader.onloadend = function() {
+          data.image = reader.result;
+          that.wall.save(null, {
+            wait: true,
+            success: function(model, response, options) {
+              model.gym = that.gym
+              app.Router.navigate(model.url(), { trigger: true })
+            },
+            error: function(model, response, options) {
+              console.log(response.responseText)
+            }
+          });
         }
-      });
+
+        reader.readAsDataURL(file)
+      }
+    },
+    changePreview: function(e) {
+      e.preventDefault()
+      var that = this
+      var file = that.$el.find('input[name="image"]')[0].files[0]; 
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        var pImage = new Image();
+        pImage.style.width = "100%";
+        pImage.title = file.name;
+        pImage.src = reader.result
+        that.beforePreview.html(pImage)
+        $.ajax({
+          url: that.wall.gym.url()+"/walls-image",
+          data: JSON.stringify({ image: reader.result }),
+          type: "POST",
+          contentType: 'application/json',
+          processData: false,
+          success: function(data) {
+            var vpImage = new Image();
+            vpImage.style.width = "100%";
+            vpImage.title = file.name;
+            vpImage.src = data.data.image;
+            that.afterPreview.html(vpImage)
+          },
+          error: function(data) {
+            console.log("error", data)
+          },
+        })
+      }
+      reader.readAsDataURL(file)
     },
   });
 
@@ -489,6 +588,7 @@ $(function(){
       var w = new Wall()
       w.set("canonical", wallCan)
       w.urlRoot = g.walls.url()
+      w.gym = g
 
       var wev = new app.WallEditView({model: w});
       this.layout.setContent(wev)

@@ -12,7 +12,10 @@ import (
 func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wall.Wall, error) {
 	if w.Name == "" {
 		return nil, xerrors.Errorf("wall Name is required")
+	} else if len(w.Image) == 0 {
+		return nil, xerrors.Errorf("wall Image is required")
 	}
+
 	w.Canonical = slug.Make(w.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
 		id, err := uow.Walls().Create(ctx, gCan, w)
@@ -22,8 +25,23 @@ func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wa
 
 		w.ID = id
 
+		originIM, err := newImage(w.Image)
+		if err != nil {
+			return xerrors.Errorf("could not initialize image: %w", err)
+		}
+		defer originIM.Close()
+
+		holds := getHolds(originIM)
+
+		for _, h := range holds {
+			_, err = uow.Holds().Create(ctx, gCan, w.Canonical, *h)
+			if err != nil {
+				return xerrors.Errorf("could not create hold: %w", err)
+			}
+		}
+
 		return nil
-	}, s.walls)
+	}, s.walls, s.holds)
 	if err != nil {
 		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
@@ -52,6 +70,8 @@ func (s *service) GetWall(ctx context.Context, gCan, wCan string) (*wall.Wall, e
 func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall) (*wall.Wall, error) {
 	if w.Name == "" {
 		return nil, xerrors.Errorf("wall Name is required")
+	} else if len(w.Image) == 0 {
+		return nil, xerrors.Errorf("wall Image is required")
 	}
 	w.Canonical = slug.Make(w.Name)
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
@@ -59,8 +79,29 @@ func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall
 		if err != nil {
 			return xerrors.Errorf("failed to update wall %q: %w", wCan, err)
 		}
+
+		originIM, err := newImage(w.Image)
+		if err != nil {
+			return xerrors.Errorf("could not initialize image: %w", err)
+		}
+		defer originIM.Close()
+
+		holds := getHolds(originIM)
+
+		err = uow.Holds().DeleteByWallCanonical(ctx, gCan, w.Canonical)
+		if err != nil {
+			return xerrors.Errorf("could not delete holds: %w", err)
+		}
+
+		for _, h := range holds {
+			_, err = uow.Holds().Create(ctx, gCan, w.Canonical, *h)
+			if err != nil {
+				return xerrors.Errorf("could not create hold: %w", err)
+			}
+		}
+
 		return nil
-	}, s.walls)
+	}, s.walls, s.holds)
 	if err != nil {
 		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}

@@ -33,6 +33,8 @@ type Service interface {
 	UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall) (*wall.Wall, error)
 	DeleteWall(ctx context.Context, gCan, wCan string) error
 
+	PreviewWallImage(ctx context.Context, gCan string, img []byte) ([]byte, error)
+
 	CreateRoute(ctx context.Context, gCan, wCan string, r route.Route) (*route.Route, error)
 	GetRoutes(ctx context.Context, gCan, wCan string) ([]*route.Route, error)
 	GetRoute(ctx context.Context, gCan, wCan, rCan string) (*route.Route, error)

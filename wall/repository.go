@@ -1,6 +1,8 @@
 package wall
 
-import "context"
+import (
+	"context"
+)
 
 //go:generate ../bin/mockgen -destination=../mock/wall_repository.go -mock_names=Repository=WallRepository -package mock github.com/xescugc/chaoswall/wall Repository
 

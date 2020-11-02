@@ -71,10 +71,11 @@ var (
 			// Initializint Repositories
 			gr := mysql.NewGymRepository(db)
 			wr := mysql.NewWallRepository(db)
+			hr := mysql.NewHoldRepository(db)
 			rr := mysql.NewRouteRepository(db)
 			suow := mysql.StartUnitOfWork(db)
 
-			s := service.New(nil, gr, wr, nil, rr, suow)
+			s := service.New(nil, gr, wr, hr, rr, suow)
 
 			mux := http.NewServeMux()
 

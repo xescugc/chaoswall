@@ -2,6 +2,7 @@ package e2e_test
 
 import (
 	"context"
+	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -19,6 +20,11 @@ func TestRoutes(t *testing.T) {
 		er  = route.Route{Name: "Route", Canonical: "route"}
 		eur = route.Route{Name: "Upated Route", Canonical: "upated-route"}
 	)
+
+	image, err := ioutil.ReadFile("./testdata/input-wall.jpg")
+	require.NoError(t, err)
+
+	w.Image = image
 
 	rg, err := s.CreateGym(context.Background(), g)
 	require.NoError(t, err)

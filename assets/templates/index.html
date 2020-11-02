@@ -107,6 +107,11 @@
         <div class="form-group">
           <label for="name">Gym Name</label>
           <input name="name" type="text" class="form-control" id="name">
+          <input type="file" id="image" name="image" accept="image/jpeg">
+        </div>
+        <div class="row clearfix">
+          <div class="col-3" id="before-preview"></div>
+          <div class="col-3" id="after-preview"></div>
         </div>
         <button type="submit" class="btn btn-success">Submit</button>
       </form>
@@ -118,6 +123,11 @@
         <div class="form-group">
           <label for="name">Gym Name</label>
           <input name="name" type="text" value="<%= wall.name %>" class="form-control" id="name">
+          <input type="file" id="image" name="image" accept="image/jpeg">
+        </div>
+        <div class="row clearfix">
+          <div class="col-3" id="before-preview"></div>
+          <div class="col-3" id="after-preview"></div>
         </div>
         <button type="submit" class="btn btn-success">Submit</button>
       </form>
@@ -126,6 +136,7 @@
     <script type="text/template" id="wall-tmpl">
       <div class="clearfix">
         <h1>Wall: <%= wall.name %></h1>
+        <img src="<%= wall.image %>" width="10%"/>
         <div class="float-right btn-group" role="group">
           <button type="button" class="btn btn-info edit">Edit</button>
           <button type="button" class="btn btn-danger delete">Delete</button>

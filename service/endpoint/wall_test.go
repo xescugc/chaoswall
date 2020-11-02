@@ -142,3 +142,30 @@ func TestMakeDeleteWall(t *testing.T) {
 		assert.Nil(t, resp)
 	})
 }
+
+func TestMakePreviewWallImage(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		var (
+			ctrl     = gomock.NewController(t)
+			service  = mock.NewService(ctrl)
+			ctx      = context.Background()
+			gCan     = "gym-can"
+			reqImage = []byte("image")
+			req      = endpoint.PreviewWallImageRequest{
+				GymCanonical: gCan,
+				Image:        reqImage,
+			}
+			respImage = []byte("image")
+			eresp     = endpoint.PreviewWallImageResponse{
+				Image: reqImage,
+			}
+		)
+
+		service.EXPECT().PreviewWallImage(ctx, gCan, reqImage).Return(respImage, nil)
+
+		ep := endpoint.MakePreviewWallImage(service)
+		resp, err := ep(ctx, req)
+		require.Nil(t, err)
+		assert.Equal(t, eresp, resp)
+	})
+}
