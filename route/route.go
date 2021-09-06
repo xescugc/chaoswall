@@ -2,6 +2,8 @@ package route
 
 import "github.com/xescugc/chaoswall/hold"
 
+//go:generate enumer -type=Type -transform=snake -output=type_string.go
+
 type Type uint
 
 const (
@@ -10,10 +12,10 @@ const (
 )
 
 type Route struct {
-	ID        uint32
-	Name      string
-	Canonical string
-	//Type        Type
+	ID          uint32
+	Name        string
+	Canonical   string
+	Type        Type
 	Description string
 }
 

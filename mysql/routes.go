@@ -3,6 +3,7 @@ package mysql
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/cycloidio/sqlr"
@@ -178,7 +179,7 @@ func scanRoute(s sqlr.Scanner) (*route.Route, error) {
 	err := s.Scan(g.scanFields()...)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, nil
+			return nil, errors.New("route not found")
 		}
 		return nil, xerrors.Errorf("failed to Scan: %w", err)
 	}

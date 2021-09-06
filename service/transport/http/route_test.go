@@ -25,7 +25,7 @@ func TestGetRoutes(t *testing.T) {
 			gCan = "gym-can"
 			wCan = "wall-can"
 			r    = route.Route{Name: "Name"}
-			mr   = models.Route(r)
+			mr   = models.NewRoute(r)
 		)
 		defer server.Close()
 
@@ -52,7 +52,7 @@ func TestCreateRoute(t *testing.T) {
 			gCan = "gym-can"
 			wCan = "wall-can"
 			r    = route.Route{Name: "Name"}
-			mr   = models.Route(r)
+			mr   = models.NewRoute(r)
 		)
 		defer server.Close()
 
@@ -80,7 +80,7 @@ func TestGetRoute(t *testing.T) {
 			wCan = "wall-can"
 			rCan = "route-can"
 			r    = route.Route{Name: "Name"}
-			mr   = models.Route(r)
+			mr   = models.NewRoute(r)
 		)
 		defer server.Close()
 

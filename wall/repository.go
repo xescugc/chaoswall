@@ -8,8 +8,8 @@ import (
 
 type Repository interface {
 	Create(ctx context.Context, gCan string, w Wall) (uint32, error)
-	Filter(ctx context.Context, gCan string) ([]*Wall, error)
-	FindByCanonical(ctx context.Context, gCan, wCan string) (*Wall, error)
+	FilterWithHolds(ctx context.Context, gCan string) ([]*WithHolds, error)
+	FindByCanonicalWithHolds(ctx context.Context, gCan, wCan string) (*WithHolds, error)
 	UpdateByCanonical(ctx context.Context, gCan, wCan string, w Wall) error
 	DeleteByCanonical(ctx context.Context, gCan, wCan string) error
 }

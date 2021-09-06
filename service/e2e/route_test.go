@@ -32,7 +32,7 @@ func TestRoutes(t *testing.T) {
 
 	rw, err := s.CreateWall(context.Background(), g.Canonical, w)
 	require.NoError(t, err)
-	w = *rw
+	w = rw.Wall
 
 	t.Run("CreateRoute", func(t *testing.T) {
 		var (

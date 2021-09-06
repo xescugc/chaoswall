@@ -35,7 +35,8 @@ func TestCreateWall(t *testing.T) {
 
 		rw, err := s.S.CreateWall(ctx, gCan, w)
 		require.NoError(t, err)
-		assert.Equal(t, &ew, rw)
+		assert.Equal(t, ew, rw.Wall)
+		assert.Greater(t, len(rw.Holds), 1)
 	})
 
 	t.Run("RequiredName", func(t *testing.T) {
@@ -80,11 +81,11 @@ func TestGetWalls(t *testing.T) {
 			ew = wall.Wall{Canonical: gCan}
 		)
 
-		s.Walls.EXPECT().Filter(ctx, gCan).Return([]*wall.Wall{&ew}, nil)
+		s.Walls.EXPECT().FilterWithHolds(ctx, gCan).Return([]*wall.WithHolds{&wall.WithHolds{Wall: ew}}, nil)
 
 		ws, err := s.S.GetWalls(ctx, gCan)
 		require.NoError(t, err)
-		assert.Equal(t, []*wall.Wall{&ew}, ws)
+		assert.Equal(t, []*wall.WithHolds{&wall.WithHolds{Wall: ew}}, ws)
 	})
 }
 
@@ -100,11 +101,11 @@ func TestGetWall(t *testing.T) {
 			ew = wall.Wall{Canonical: gCan}
 		)
 
-		s.Walls.EXPECT().FindByCanonical(ctx, gCan, wCan).Return(&ew, nil)
+		s.Walls.EXPECT().FindByCanonicalWithHolds(ctx, gCan, wCan).Return(&wall.WithHolds{Wall: ew}, nil)
 
 		rw, err := s.S.GetWall(ctx, gCan, wCan)
 		require.NoError(t, err)
-		assert.Equal(t, &ew, rw)
+		assert.Equal(t, ew, rw.Wall)
 	})
 }
 
@@ -132,7 +133,8 @@ func TestUpdateWall(t *testing.T) {
 
 		rw, err := s.S.UpdateWall(ctx, gCan, wCan, w)
 		require.NoError(t, err)
-		assert.Equal(t, &uw, rw)
+		assert.Equal(t, uw, rw.Wall)
+		assert.Greater(t, len(rw.Holds), 1)
 	})
 
 	t.Run("RequiredName", func(t *testing.T) {

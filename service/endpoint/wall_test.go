@@ -24,11 +24,11 @@ func TestMakeGetWalls(t *testing.T) {
 				GymCanonical: gCan,
 			}
 			eresp = endpoint.GetWallsResponse{
-				Walls: []*wall.Wall{&w},
+				Walls: []*wall.WithHolds{&wall.WithHolds{Wall: w}},
 			}
 		)
 
-		service.EXPECT().GetWalls(ctx, gCan).Return([]*wall.Wall{&w}, nil)
+		service.EXPECT().GetWalls(ctx, gCan).Return([]*wall.WithHolds{&wall.WithHolds{Wall: w}}, nil)
 
 		ep := endpoint.MakeGetWalls(service)
 		resp, err := ep(ctx, req)
@@ -51,11 +51,11 @@ func TestMakeCreateWall(t *testing.T) {
 				Name: w.Name,
 			}
 			eresp = endpoint.CreateWallResponse{
-				Wall: w,
+				Wall: wall.WithHolds{Wall: w},
 			}
 		)
 
-		service.EXPECT().CreateWall(ctx, gCan, w).Return(&w, nil)
+		service.EXPECT().CreateWall(ctx, gCan, w).Return(&wall.WithHolds{Wall: w}, nil)
 
 		ep := endpoint.MakeCreateWall(service)
 		resp, err := ep(ctx, req)
@@ -77,11 +77,11 @@ func TestMakeGetWall(t *testing.T) {
 				WallCanonical: w.Canonical,
 			}
 			eresp = endpoint.GetWallResponse{
-				Wall: w,
+				Wall: wall.WithHolds{Wall: w},
 			}
 		)
 
-		service.EXPECT().GetWall(ctx, gCan, w.Canonical).Return(&w, nil)
+		service.EXPECT().GetWall(ctx, gCan, w.Canonical).Return(&wall.WithHolds{Wall: w}, nil)
 
 		ep := endpoint.MakeGetWall(service)
 		resp, err := ep(ctx, req)
@@ -107,11 +107,11 @@ func TestMakeUpdateWall(t *testing.T) {
 				NewName: uw.Name,
 			}
 			eresp = endpoint.UpdateWallResponse{
-				Wall: ew,
+				Wall: wall.WithHolds{Wall: ew},
 			}
 		)
 
-		service.EXPECT().UpdateWall(ctx, gCan, oldCan, uw).Return(&ew, nil)
+		service.EXPECT().UpdateWall(ctx, gCan, oldCan, uw).Return(&wall.WithHolds{Wall: ew}, nil)
 
 		ep := endpoint.MakeUpdateWall(service)
 		resp, err := ep(ctx, req)

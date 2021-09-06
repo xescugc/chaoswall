@@ -6,6 +6,7 @@ GOIMPORTS := $(TOOL_BIN)/goimports
 ENUMER := $(TOOL_BIN)/enumer
 MOCKGEN := $(TOOL_BIN)/mockgen
 PKGER := $(TOOL_BIN)/pkger
+MINIFY := $(TOOL_BIN)/minify
 
 VERSION= $(shell git describe --tags --always)
 
@@ -38,6 +39,9 @@ $(MOCKGEN):
 
 $(PKGER):
 	@GOBIN=$(TOOL_BIN) go install github.com/markbates/pkger/cmd/pkger
+
+$(MINIFY):
+	@GOBIN=$(TOOL_BIN) go install github.com/tdewolff/minify/v2/cmd/minify
 
 .PHONY: test
 test: ## Tests all the project

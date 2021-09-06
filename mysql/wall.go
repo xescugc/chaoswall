@@ -3,9 +3,11 @@ package mysql
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/cycloidio/sqlr"
+	"github.com/xescugc/chaoswall/hold"
 	"github.com/xescugc/chaoswall/wall"
 	"golang.org/x/xerrors"
 )
@@ -94,43 +96,51 @@ func (r *WallRepository) Create(ctx context.Context, gCan string, w wall.Wall) (
 	return id, nil
 }
 
-func (r *WallRepository) Filter(ctx context.Context, gCan string) ([]*wall.Wall, error) {
+func (r *WallRepository) FilterWithHolds(ctx context.Context, gCan string) ([]*wall.WithHolds, error) {
 	rows, err := r.querier.QueryContext(ctx, fmt.Sprintf(`
-		SELECT %s
+		SELECT %s, %s
 		FROM walls AS w
 		JOIN gyms AS g
 			ON g.id = w.gym_id
+		JOIN holds AS h
+			ON h.wall_id = w.id
 		WHERE g.canonical = ?
 		ORDER BY w.id
-		`, dbWallFields("w")), gCan,
+		`, dbWallFields("w"), dbHoldFields("h")), gCan,
 	)
 	if err != nil {
 		return nil, xerrors.Errorf("failed to QueryContext: %w", err)
 	}
 	defer rows.Close()
 
-	walls, err := scanWalls(rows)
+	walls, err := scanWallsWithHolds(rows)
 	if err != nil {
-		return nil, xerrors.Errorf("failed to scanWalls: %w", err)
+		return nil, xerrors.Errorf("failed to scanWallsWithHolds: %w", err)
 	}
 	return walls, nil
 }
 
-func (r *WallRepository) FindByCanonical(ctx context.Context, gCan, wCan string) (*wall.Wall, error) {
-	row := r.querier.QueryRowContext(ctx, fmt.Sprintf(`
-		SELECT %s
+func (r *WallRepository) FindByCanonicalWithHolds(ctx context.Context, gCan, wCan string) (*wall.WithHolds, error) {
+	rows, err := r.querier.QueryContext(ctx, fmt.Sprintf(`
+		SELECT %s, %s
 		FROM walls AS w
 		JOIN gyms AS g
 			ON g.id = w.gym_id
+		JOIN holds AS h
+			ON h.wall_id = w.id
 		WHERE g.canonical = ? AND w.canonical = ?
-	`, dbWallFields("w")), gCan, wCan)
-
-	w, err := scanWall(row)
+	`, dbWallFields("w"), dbHoldFields("h")), gCan, wCan)
 	if err != nil {
-		return nil, xerrors.Errorf("failed to scanWall: %w", err)
+		return nil, xerrors.Errorf("failed to QueryContext: %w", err)
+	}
+	defer rows.Close()
+
+	ws, err := scanWallsWithHolds(rows)
+	if err != nil {
+		return nil, xerrors.Errorf("failed to scanWallsWithHolds: %w", err)
 	}
 
-	return w, nil
+	return ws[0], nil
 }
 
 func (r *WallRepository) UpdateByCanonical(ctx context.Context, gCan, wCan string, w wall.Wall) error {
@@ -165,37 +175,50 @@ func (r *WallRepository) DeleteByCanonical(ctx context.Context, gCan, wCan strin
 	return nil
 }
 
-// scanWall scans and returns a Wall from a row
-func scanWall(s sqlr.Scanner) (*wall.Wall, error) {
-	var g dbWall
+// scanWallWithHolds scans and returns a Wall from a row
+func scanWallWithHolds(s sqlr.Scanner) (*wall.WithHolds, error) {
+	var w dbWall
+	var h dbHold
 
-	err := s.Scan(g.scanFields()...)
+	err := s.Scan(joinFields(w.scanFields(), h.scanFields())...)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, nil
+			return nil, errors.New("wall not found")
 		}
 		return nil, xerrors.Errorf("failed to Scan: %w", err)
 	}
 
-	return g.toDomainEntity(), nil
+	return &wall.WithHolds{
+		Wall:  *w.toDomainEntity(),
+		Holds: []hold.Hold{*h.toDomainEntity()},
+	}, nil
 }
 
-// scanWalls scans and returns Walls from the rows,
+// scanWallsWithHolds scans and returns Walls from the rows,
 // the caller is the one in charge of closing the rows
-func scanWalls(rows *sql.Rows) ([]*wall.Wall, error) {
-	var gs []*wall.Wall
+func scanWallsWithHolds(rows *sql.Rows) ([]*wall.WithHolds, error) {
+	var (
+		ws   []*wall.WithHolds
+		idxs = make(map[uint32]int)
+	)
 
 	for rows.Next() {
-		g, err := scanWall(rows)
+		w, err := scanWallWithHolds(rows)
 		if err != nil {
 			return nil, xerrors.Errorf("failed to scanWall: %w", err)
 		}
-		gs = append(gs, g)
+
+		if idx, ok := idxs[w.ID]; ok {
+			ws[idx].Holds = append(ws[idx].Holds, w.Holds...)
+		} else {
+			ws = append(ws, w)
+			idxs[w.ID] = len(ws) - 1
+		}
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, xerrors.Errorf("failed to scan rows: %w", err)
 	}
 
-	return gs, nil
+	return ws, nil
 }

@@ -41,9 +41,10 @@ func TestWalls(t *testing.T) {
 		)
 
 		rw, err := s.CreateWall(ctx, g.Canonical, w)
-		rw.ID = 0
 		require.NoError(t, err)
-		assert.Equal(t, &ew, rw)
+		rw.ID = 0
+		assert.Equal(t, ew, rw.Wall)
+		assert.Greater(t, len(rw.Holds), 1)
 	})
 	t.Run("PreviewWallImage", func(t *testing.T) {
 		var (
@@ -61,7 +62,6 @@ func TestWalls(t *testing.T) {
 		out64 := base64.StdEncoding.EncodeToString(outputBytes)
 		ret64 := base64.StdEncoding.EncodeToString(retBytes)
 
-		//ioutil.WriteFile("cv-out.jpg", retBytes, 0664)
 		assert.Equal(t, out64, ret64)
 	})
 	t.Run("GetWalls", func(t *testing.T) {
@@ -70,9 +70,11 @@ func TestWalls(t *testing.T) {
 		)
 
 		rws, err := s.GetWalls(ctx, g.Canonical)
-		rws[0].ID = 0
 		require.NoError(t, err)
-		assert.Equal(t, []*wall.Wall{&ew}, rws)
+		rws[0].ID = 0
+		assert.Greater(t, len(rws[0].Holds), 1)
+		rws[0].Holds = nil
+		assert.Equal(t, []*wall.WithHolds{&wall.WithHolds{Wall: ew}}, rws)
 	})
 	t.Run("GetWall", func(t *testing.T) {
 		var (
@@ -80,9 +82,10 @@ func TestWalls(t *testing.T) {
 		)
 
 		rw, err := s.GetWall(ctx, g.Canonical, ew.Canonical)
-		rw.ID = 0
 		require.NoError(t, err)
-		assert.Equal(t, &ew, rw)
+		rw.ID = 0
+		assert.Equal(t, ew, rw.Wall)
+		assert.Greater(t, len(rw.Holds), 1)
 	})
 	t.Run("UpdateWall", func(t *testing.T) {
 		var (
@@ -91,9 +94,10 @@ func TestWalls(t *testing.T) {
 		)
 
 		rw, err := s.UpdateWall(ctx, g.Canonical, ew.Canonical, w)
-		rw.ID = 0
 		require.NoError(t, err)
-		assert.Equal(t, &euw, rw)
+		rw.ID = 0
+		assert.Equal(t, euw, rw.Wall)
+		assert.Greater(t, len(rw.Holds), 1)
 	})
 	t.Run("DeleteWall", func(t *testing.T) {
 		var (

@@ -26,10 +26,37 @@
       </div>
     </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/underscore.min.js"></script>
-    <script src="/assets/js/backbone.min.js"></script>
-    <script src="/assets/js/front.js"></script>
+    <!--<script src="/assets/js/jquery.min.js"></script>-->
+    <!--<script src="/assets/js/underscore.min.js"></script>-->
+    <!--<script src="/assets/js/backbone.min.js"></script>-->
+    <!--<script src="/assets/js/app.js"></script>-->
+    <script src="/assets/js/vendor/requirejs.min.js"></script>
+    <script>
+      // Place third party dependencies in the lib folder
+      //
+      // Configure loading modules from the lib directory,
+      requirejs.config({
+        "baseUrl": "/assets/js/vendor",
+        "paths": {
+          "app": "../app",
+          "views": "../app/views",
+          "models": "../app/models",
+          "collections": "../app/collections",
+          "utils": "../app/utils",
+          "router": "../app/router",
+
+          "jquery": ["jquery.min"],
+          "underscore": ["underscore.min"],
+          "backbone": ["backbone.min"],
+        },
+        "shim": {
+          "backbone": ["jquery", "underscore"],
+        }
+      });
+
+      // Load the main app module to start the app
+      requirejs(["app/main"]);
+    </script>
 
     <script type="text/template" id="gyms-tmpl">
       <h1>Gyms</h1>
@@ -105,7 +132,7 @@
       <h1>New Wall</h1>
       <form>
         <div class="form-group">
-          <label for="name">Gym Name</label>
+          <label for="name">Wall Name</label>
           <input name="name" type="text" class="form-control" id="name">
           <input type="file" id="image" name="image" accept="image/jpeg">
         </div>
@@ -121,7 +148,7 @@
       <h1>Edit Wall: <%= wall.name %></h1>
       <form>
         <div class="form-group">
-          <label for="name">Gym Name</label>
+          <label for="name">Wall Name</label>
           <input name="name" type="text" value="<%= wall.name %>" class="form-control" id="name">
           <input type="file" id="image" name="image" accept="image/jpeg">
         </div>
@@ -165,8 +192,11 @@
       <h1>New Route</h1>
       <form>
         <div class="form-group">
-          <label for="name">Gym Name</label>
+          <label for="name">Route Name</label>
           <input name="name" type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+          <canvas id="canvas"></canvas>
         </div>
         <button type="submit" class="btn btn-success">Submit</button>
       </form>
@@ -176,7 +206,7 @@
       <h1>Edit Route: <%= route.name %></h1>
       <form>
         <div class="form-group">
-          <label for="name">Gym Name</label>
+          <label for="name">Route Name</label>
           <input name="name" type="text" value="<%= route.name %>" class="form-control" id="name">
         </div>
         <button type="submit" class="btn btn-success">Submit</button>

@@ -97,10 +97,10 @@ func (mr *ServiceMockRecorder) CreateUser(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // CreateWall mocks base method
-func (m *Service) CreateWall(arg0 context.Context, arg1 string, arg2 wall.Wall) (*wall.Wall, error) {
+func (m *Service) CreateWall(arg0 context.Context, arg1 string, arg2 wall.Wall) (*wall.WithHolds, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateWall", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*wall.Wall)
+	ret0, _ := ret[0].(*wall.WithHolds)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -243,10 +243,10 @@ func (mr *ServiceMockRecorder) GetUser(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // GetWall mocks base method
-func (m *Service) GetWall(arg0 context.Context, arg1, arg2 string) (*wall.Wall, error) {
+func (m *Service) GetWall(arg0 context.Context, arg1, arg2 string) (*wall.WithHolds, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWall", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*wall.Wall)
+	ret0, _ := ret[0].(*wall.WithHolds)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -258,10 +258,10 @@ func (mr *ServiceMockRecorder) GetWall(arg0, arg1, arg2 interface{}) *gomock.Cal
 }
 
 // GetWalls mocks base method
-func (m *Service) GetWalls(arg0 context.Context, arg1 string) ([]*wall.Wall, error) {
+func (m *Service) GetWalls(arg0 context.Context, arg1 string) ([]*wall.WithHolds, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWalls", arg0, arg1)
-	ret0, _ := ret[0].([]*wall.Wall)
+	ret0, _ := ret[0].([]*wall.WithHolds)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -332,10 +332,10 @@ func (mr *ServiceMockRecorder) UpdateUser(arg0, arg1, arg2 interface{}) *gomock.
 }
 
 // UpdateWall mocks base method
-func (m *Service) UpdateWall(arg0 context.Context, arg1, arg2 string, arg3 wall.Wall) (*wall.Wall, error) {
+func (m *Service) UpdateWall(arg0 context.Context, arg1, arg2 string, arg3 wall.Wall) (*wall.WithHolds, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateWall", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(*wall.Wall)
+	ret0, _ := ret[0].(*wall.WithHolds)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

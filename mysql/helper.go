@@ -38,3 +38,11 @@ func ToNullIInt64(i int) sql.NullInt64 {
 func ToUint32(n sql.NullInt64) uint32 {
 	return uint32(n.Int64)
 }
+
+func joinFields(sls ...[]interface{}) []interface{} {
+	res := sls[0]
+	for i := 1; i < len(sls); i++ {
+		res = append(res, sls[i]...)
+	}
+	return res
+}

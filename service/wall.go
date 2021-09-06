@@ -4,12 +4,13 @@ import (
 	"context"
 
 	"github.com/gosimple/slug"
+	"github.com/xescugc/chaoswall/hold"
 	"github.com/xescugc/chaoswall/unitwork"
 	"github.com/xescugc/chaoswall/wall"
 	"golang.org/x/xerrors"
 )
 
-func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wall.Wall, error) {
+func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wall.WithHolds, error) {
 	if w.Name == "" {
 		return nil, xerrors.Errorf("wall Name is required")
 	} else if len(w.Image) == 0 {
@@ -17,13 +18,17 @@ func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wa
 	}
 
 	w.Canonical = slug.Make(w.Name)
+	wwh := wall.WithHolds{
+		Wall:  w,
+		Holds: make([]hold.Hold, 0, 0),
+	}
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
 		id, err := uow.Walls().Create(ctx, gCan, w)
 		if err != nil {
 			return xerrors.Errorf("failed to create wall: %w", err)
 		}
 
-		w.ID = id
+		wwh.Wall.ID = id
 
 		originIM, err := newImage(w.Image)
 		if err != nil {
@@ -34,10 +39,12 @@ func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wa
 		holds := getHolds(originIM)
 
 		for _, h := range holds {
-			_, err = uow.Holds().Create(ctx, gCan, w.Canonical, *h)
+			h.ID, err = uow.Holds().Create(ctx, gCan, w.Canonical, h)
 			if err != nil {
 				return xerrors.Errorf("could not create hold: %w", err)
 			}
+
+			wwh.Holds = append(wwh.Holds, h)
 		}
 
 		return nil
@@ -46,11 +53,11 @@ func (s *service) CreateWall(ctx context.Context, gCan string, w wall.Wall) (*wa
 		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
 
-	return &w, nil
+	return &wwh, nil
 }
 
-func (s *service) GetWalls(ctx context.Context, gCan string) ([]*wall.Wall, error) {
-	walls, err := s.walls.Filter(ctx, gCan)
+func (s *service) GetWalls(ctx context.Context, gCan string) ([]*wall.WithHolds, error) {
+	walls, err := s.walls.FilterWithHolds(ctx, gCan)
 	if err != nil {
 		return nil, xerrors.Errorf("failed to filter walls: %w", err)
 	}
@@ -58,8 +65,8 @@ func (s *service) GetWalls(ctx context.Context, gCan string) ([]*wall.Wall, erro
 	return walls, nil
 }
 
-func (s *service) GetWall(ctx context.Context, gCan, wCan string) (*wall.Wall, error) {
-	wall, err := s.walls.FindByCanonical(ctx, gCan, wCan)
+func (s *service) GetWall(ctx context.Context, gCan, wCan string) (*wall.WithHolds, error) {
+	wall, err := s.walls.FindByCanonicalWithHolds(ctx, gCan, wCan)
 	if err != nil {
 		return nil, xerrors.Errorf("failed to find wall %q: %w", wCan, err)
 	}
@@ -67,13 +74,17 @@ func (s *service) GetWall(ctx context.Context, gCan, wCan string) (*wall.Wall, e
 	return wall, nil
 }
 
-func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall) (*wall.Wall, error) {
+func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall) (*wall.WithHolds, error) {
 	if w.Name == "" {
 		return nil, xerrors.Errorf("wall Name is required")
 	} else if len(w.Image) == 0 {
 		return nil, xerrors.Errorf("wall Image is required")
 	}
 	w.Canonical = slug.Make(w.Name)
+	wwh := wall.WithHolds{
+		Wall:  w,
+		Holds: make([]hold.Hold, 0, 0),
+	}
 	err := s.startUnitOfWork(ctx, func(uow unitwork.UnitOfWork) error {
 		err := uow.Walls().UpdateByCanonical(ctx, gCan, wCan, w)
 		if err != nil {
@@ -94,10 +105,11 @@ func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall
 		}
 
 		for _, h := range holds {
-			_, err = uow.Holds().Create(ctx, gCan, w.Canonical, *h)
+			h.ID, err = uow.Holds().Create(ctx, gCan, w.Canonical, h)
 			if err != nil {
 				return xerrors.Errorf("could not create hold: %w", err)
 			}
+			wwh.Holds = append(wwh.Holds, h)
 		}
 
 		return nil
@@ -106,7 +118,7 @@ func (s *service) UpdateWall(ctx context.Context, gCan, wCan string, w wall.Wall
 		return nil, xerrors.Errorf("failed unit of work: %w", err)
 	}
 
-	return &w, nil
+	return &wwh, nil
 }
 
 func (s *service) DeleteWall(ctx context.Context, gCan, wCan string) error {

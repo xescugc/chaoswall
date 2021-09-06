@@ -63,34 +63,34 @@ func (mr *WallRepositoryMockRecorder) DeleteByCanonical(arg0, arg1, arg2 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByCanonical", reflect.TypeOf((*WallRepository)(nil).DeleteByCanonical), arg0, arg1, arg2)
 }
 
-// Filter mocks base method
-func (m *WallRepository) Filter(arg0 context.Context, arg1 string) ([]*wall.Wall, error) {
+// FilterWithHolds mocks base method
+func (m *WallRepository) FilterWithHolds(arg0 context.Context, arg1 string) ([]*wall.WithHolds, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Filter", arg0, arg1)
-	ret0, _ := ret[0].([]*wall.Wall)
+	ret := m.ctrl.Call(m, "FilterWithHolds", arg0, arg1)
+	ret0, _ := ret[0].([]*wall.WithHolds)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Filter indicates an expected call of Filter
-func (mr *WallRepositoryMockRecorder) Filter(arg0, arg1 interface{}) *gomock.Call {
+// FilterWithHolds indicates an expected call of FilterWithHolds
+func (mr *WallRepositoryMockRecorder) FilterWithHolds(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Filter", reflect.TypeOf((*WallRepository)(nil).Filter), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FilterWithHolds", reflect.TypeOf((*WallRepository)(nil).FilterWithHolds), arg0, arg1)
 }
 
-// FindByCanonical mocks base method
-func (m *WallRepository) FindByCanonical(arg0 context.Context, arg1, arg2 string) (*wall.Wall, error) {
+// FindByCanonicalWithHolds mocks base method
+func (m *WallRepository) FindByCanonicalWithHolds(arg0 context.Context, arg1, arg2 string) (*wall.WithHolds, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByCanonical", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*wall.Wall)
+	ret := m.ctrl.Call(m, "FindByCanonicalWithHolds", arg0, arg1, arg2)
+	ret0, _ := ret[0].(*wall.WithHolds)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// FindByCanonical indicates an expected call of FindByCanonical
-func (mr *WallRepositoryMockRecorder) FindByCanonical(arg0, arg1, arg2 interface{}) *gomock.Call {
+// FindByCanonicalWithHolds indicates an expected call of FindByCanonicalWithHolds
+func (mr *WallRepositoryMockRecorder) FindByCanonicalWithHolds(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByCanonical", reflect.TypeOf((*WallRepository)(nil).FindByCanonical), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByCanonicalWithHolds", reflect.TypeOf((*WallRepository)(nil).FindByCanonicalWithHolds), arg0, arg1, arg2)
 }
 
 // UpdateByCanonical mocks base method

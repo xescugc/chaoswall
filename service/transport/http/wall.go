@@ -18,10 +18,10 @@ func decodeGetWallsRequest(_ context.Context, r *http.Request) (interface{}, err
 }
 func encodeGetWallsResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.GetWallsResponse)
-	walls := make([]models.Wall, 0, len(res.Walls))
+	walls := make([]models.WallWithHolds, 0, len(res.Walls))
 
 	for _, w := range res.Walls {
-		walls = append(walls, models.NewWall(*w))
+		walls = append(walls, models.NewWallWithHolds(*w))
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -52,7 +52,7 @@ func decodeCreateWallRequest(_ context.Context, r *http.Request) (interface{}, e
 }
 func encodeCreateWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.CreateWallResponse)
-	wall := models.NewWall(res.Wall)
+	wall := models.NewWallWithHolds(res.Wall)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(wall))
@@ -69,7 +69,7 @@ func decodeGetWallRequest(_ context.Context, r *http.Request) (interface{}, erro
 }
 func encodeGetWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.GetWallResponse)
-	wall := models.NewWall(res.Wall)
+	wall := models.NewWallWithHolds(res.Wall)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(wall))
@@ -101,7 +101,7 @@ func decodeUpdateWallRequest(_ context.Context, r *http.Request) (interface{}, e
 }
 func encodeUpdateWallResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.UpdateWallResponse)
-	wall := models.NewWall(res.Wall)
+	wall := models.NewWallWithHolds(res.Wall)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(wall))

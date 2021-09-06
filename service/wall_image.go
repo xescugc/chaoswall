@@ -57,7 +57,7 @@ func newImage(img []byte) (gocv.Mat, error) {
 	return originIM, nil
 }
 
-func getHolds(originIM gocv.Mat) []*hold.Hold {
+func getHolds(originIM gocv.Mat) []hold.Hold {
 	gauBlurIM := gocv.NewMat()
 	defer gauBlurIM.Close()
 
@@ -107,14 +107,14 @@ func getHolds(originIM gocv.Mat) []*hold.Hold {
 	defer sbd.Close()
 
 	kps := sbd.Detect(maskIM)
-	holds := make([]*hold.Hold, len(kps))
+	holds := make([]hold.Hold, len(kps))
 	for i, kp := range kps {
 		x := int(kp.X)
 		y := int(kp.Y)
 
 		size := int(math.Ceil(kp.Size))
 
-		holds[i] = &hold.Hold{
+		holds[i] = hold.Hold{
 			X:    x,
 			Y:    y,
 			Size: size,

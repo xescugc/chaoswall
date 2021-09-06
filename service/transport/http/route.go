@@ -22,7 +22,7 @@ func encodeGetRoutesResponse(_ context.Context, w http.ResponseWriter, response 
 	routes := make([]models.Route, 0, len(res.Routes))
 
 	for _, r := range res.Routes {
-		routes = append(routes, models.Route(*r))
+		routes = append(routes, models.NewRoute(*r))
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -46,7 +46,7 @@ func decodeCreateRouteRequest(_ context.Context, r *http.Request) (interface{}, 
 }
 func encodeCreateRouteResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.CreateRouteResponse)
-	route := models.Route(res.Route)
+	route := models.NewRoute(res.Route)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(route))
@@ -64,7 +64,7 @@ func decodeGetRouteRequest(_ context.Context, r *http.Request) (interface{}, err
 }
 func encodeGetRouteResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.GetRouteResponse)
-	route := models.Route(res.Route)
+	route := models.NewRoute(res.Route)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(route))
@@ -90,7 +90,7 @@ func decodeUpdateRouteRequest(_ context.Context, r *http.Request) (interface{}, 
 }
 func encodeUpdateRouteResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(endpoint.UpdateRouteResponse)
-	route := models.Route(res.Route)
+	route := models.NewRoute(res.Route)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(dataResponse(route))

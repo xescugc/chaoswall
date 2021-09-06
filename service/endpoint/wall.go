@@ -13,7 +13,7 @@ type GetWallsRequest struct {
 }
 
 type GetWallsResponse struct {
-	Walls []*wall.Wall
+	Walls []*wall.WithHolds
 }
 
 func MakeGetWalls(s service.Service) endpoint.Endpoint {
@@ -37,7 +37,7 @@ type CreateWallRequest struct {
 }
 
 type CreateWallResponse struct {
-	Wall wall.Wall
+	Wall wall.WithHolds
 }
 
 func MakeCreateWall(s service.Service) endpoint.Endpoint {
@@ -65,7 +65,7 @@ type GetWallRequest struct {
 }
 
 type GetWallResponse struct {
-	Wall wall.Wall
+	Wall wall.WithHolds
 }
 
 func MakeGetWall(s service.Service) endpoint.Endpoint {
@@ -92,7 +92,7 @@ type UpdateWallRequest struct {
 }
 
 type UpdateWallResponse struct {
-	Wall wall.Wall
+	Wall wall.WithHolds
 }
 
 func MakeUpdateWall(s service.Service) endpoint.Endpoint {

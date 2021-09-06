@@ -152,5 +152,4 @@ func init() {
 
 	serveCmd.PersistentFlags().String("db-name", "", "The name of the database to use")
 	viper.BindPFlag("db-name", serveCmd.PersistentFlags().Lookup("db-name"))
-
 }

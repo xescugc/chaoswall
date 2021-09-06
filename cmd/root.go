@@ -26,5 +26,4 @@ func init() {
 
 	rootCmd.PersistentFlags().StringP("config", "c", "", "Configuration path")
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
-
 }
